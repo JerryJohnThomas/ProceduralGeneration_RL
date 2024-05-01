@@ -17,7 +17,7 @@
 ### Game Environment
 
 World
-1. Create a World - [x]
+1. Create a World &#9745;
 2. Create a starting and ending point - [x]
 3. create dynamic slab inserts - [x]
 
