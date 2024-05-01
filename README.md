@@ -29,15 +29,14 @@ Agent
 5. add ray cast
 
 ### RL
-1. write ppo 
+1. write ppo using tf.js 
 2. write reward mechanisms
 3. add environment stuff
 4. add agent stuff
-5. Adverserial frame work
+5. Adversarial frame work
 
 ### Training
 1. Run single player for 10k steps **and pray** (the most crucial step in RL)
-2
 
 
 
