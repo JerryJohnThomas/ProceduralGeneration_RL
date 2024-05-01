@@ -12,7 +12,8 @@ function App() {
                 <Route path="/" element={<World />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/world" element={<World />} />
-                <Route path="*" element={<Page404 />} />
+                <Route path="/ProceduralGeneration_RL" element={<World />} />
+                <Route path="/*" element={<Page404 />} />
             </Routes>
         </Router>
     );

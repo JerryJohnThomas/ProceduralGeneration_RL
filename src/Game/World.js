@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Plane, PerspectiveCamera } from "@react-three/drei";
 import { FloorWithSquares, Floor, Light_Common, FloorUgly, Platform, CheckerPlatform } from "./Components/Floor";
 import { DirectionalLight } from "@react-three/drei";
+import ClickToAddPlatform from "./Components/ClickToAddPlatform";
 
 function World() {
     const controls = useRef();
@@ -11,6 +12,7 @@ function World() {
             <PerspectiveCamera makeDefault position={[0, 7, 13]} />
             <Suspense fallback={null}>
                 <Light_Common />
+                {/* <ClickToAddPlatform /> */}
                 {/* <FloorUgly /> */}
                 {/* <Floor /> */}
                 <FloorWithSquares  />
