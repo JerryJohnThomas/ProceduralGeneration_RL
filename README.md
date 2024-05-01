@@ -18,8 +18,8 @@
 
 World
 1. Create a World &#9745;
-2. Create a starting and ending point - [x]
-3. create dynamic slab inserts - [x]
+2. Create a starting and ending point &#9745;
+3. create dynamic slab inserts &#9745;
 
 Agent
 1. Create a Player 
