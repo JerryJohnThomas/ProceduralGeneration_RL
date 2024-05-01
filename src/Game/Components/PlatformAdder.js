@@ -10,13 +10,25 @@ function PlatformAdder({mouse, keys}) {
         const handleKeyDown = (event) => {
             console.log(event);
           if (event.key === 'p' || event.key === 'P') {
-            addPlatform(scene);
+            let delta = 0.01;
+            // Generate random position within a range
+            const range = 20;
+            const randomX = Math.random() * range - range / 2;
+            const randomZ = Math.random() * range - range / 2;
+            const randomPosition = [randomX + delta, 0 +delta, randomZ +delta];
+            addPlatform(scene,randomPosition);
           }
         };
     
         const handleMouseDown = (event) => {
           if (event.button === 0) { // Left mouse button
-            addPlatform(scene);
+            let delta = 0.01;
+            // Generate random position within a range
+            const range = 20;
+            const randomX = Math.random() * range - range / 2;
+            const randomZ = Math.random() * range - range / 2;
+            const randomPosition = [randomX + delta, 0 +delta, randomZ +delta];
+            addPlatform(scene,randomPosition);
           }
         };
     
@@ -38,13 +50,8 @@ function PlatformAdder({mouse, keys}) {
         };
       }, []);
 
-    const addPlatform = (scene) => {
-        let delta = 0.01;
-        // Generate random position within a range
-        const range = 20;
-        const randomX = Math.random() * range - range / 2;
-        const randomZ = Math.random() * range - range / 2;
-        const randomPosition = [randomX + delta, 0 +delta, randomZ +delta];
+    const addPlatform = (scene, randomPosition) => {
+
 
         // Create a new platform mesh
         const platformGeometry = new THREE.BoxGeometry(3, 0.5, 3);
