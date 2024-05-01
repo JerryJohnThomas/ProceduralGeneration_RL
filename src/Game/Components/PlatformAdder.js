@@ -52,15 +52,11 @@ function PlatformAdder({mouse, keys}) {
 
     const addPlatform = (scene, randomPosition) => {
 
-
         // Create a new platform mesh
         const platformGeometry = new THREE.BoxGeometry(3, 0.5, 3);
         const platformMaterial = new THREE.MeshStandardMaterial({ color: PlatformAdder_color2 });
         const newPlatform = new THREE.Mesh(platformGeometry, platformMaterial);
         newPlatform.position.set(randomPosition[0], randomPosition[1], randomPosition[2]);
-
-        console.log(scene);
-        console.log(newPlatform);
 
         // Add the new platform mesh to the scene
         scene.add(newPlatform);
