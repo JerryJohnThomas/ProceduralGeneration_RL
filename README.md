@@ -17,9 +17,9 @@
 ### Game Environment
 
 World
-1. - [x] works Create a World
-2. Create a starting and ending point
-3. create dynamic slab inserts
+1. Create a World - [x]
+2. Create a starting and ending point - [x]
+3. create dynamic slab inserts - [x]
 
 Agent
 1. Create a Player 
