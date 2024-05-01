@@ -88,11 +88,9 @@ export function Light_Common() {
     );
 }
 
-export function CheckerPlatform() {
+export function CheckerPlatform({position}) {
     const checkerSize = 0.5; // Size of each checker tile
     const numCheckers = 6; // Number of checker tiles in each row and column
-    // const thickness = 0.2; // Thickness of the checker platform
-    const positionBuffer = 2;
     const checkers = [];
 
     for (let i = 0; i < numCheckers; i++) {
@@ -100,7 +98,7 @@ export function CheckerPlatform() {
             const color = (i + j) % 2 === 0 ? "#000000" : "#FFFFFF"; // Alternate between black and white
             const position = [
                 (i - (numCheckers - 1) / 2) * checkerSize, // Calculate x position
-                -thickness / 2 + positionBuffer, // Y position (half of thickness)
+                -thickness / 2 , // Y position (half of thickness)
                 (j - (numCheckers - 1) / 2) * checkerSize, // Calculate z position
             ];
 
@@ -115,5 +113,5 @@ export function CheckerPlatform() {
         }
     }
 
-    return <group receiveShadow>{checkers}</group>;
+    return <group receiveShadow position={position}>{checkers}</group>;
 }
