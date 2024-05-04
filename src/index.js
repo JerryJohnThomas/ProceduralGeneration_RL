@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { CharacterAnimationsProvider } from "./contexts/CharacterAnimations";
+import { CharacterMovementsProvider } from "./contexts/CharacterMovements";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <CharacterAnimationsProvider>
-            <App />
+            <CharacterMovementsProvider>
+                <App />
+            </CharacterMovementsProvider>
         </CharacterAnimationsProvider>
     </React.StrictMode>
 );
