@@ -8,12 +8,13 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 const Guy = (props) => {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF("./Guy.glb")
+  // const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/Guy.glb`)
+  const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`)
   const { actions } = useAnimations(animations, group)
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
-        <group name="Guy" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+        <group name="Guy" rotation={[Math.PI / 2, 0, 0]} scale={0.5}>
           <primitive object={nodes.mixamorigHips} />
           <skinnedMesh name="name0" geometry={nodes.name0.geometry} material={nodes.name0.material} skeleton={nodes.name0.skeleton} />
           <skinnedMesh name="name1" geometry={nodes.name1.geometry} material={nodes.name1.material} skeleton={nodes.name1.skeleton} />
@@ -37,4 +38,4 @@ const Guy = (props) => {
 
 export default Guy;
 
-useGLTF.preload("./Guy.glb")
+useGLTF.preload(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`)
