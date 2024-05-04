@@ -1,11 +1,25 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
-const CharacterAnimationContext = createContext({});
+const CharacterAnimationsContext = createContext({});
 
-const CharacterAnimationContextProvider = (props) => {
-    return <CharacterAnimationContext.Provider value={{}}>{props.children}</CharacterAnimationContext.Provider>;
+export const CharacterAnimationsProvider = (props) => {
+    const [animationIndex, setAnimationIndex] = useState(1);
+    const [animations, setAnimations] = useState([]);
+
+    return (
+        <CharacterAnimationsContext.Provider
+            value={{
+                animationIndex,
+                setAnimationIndex,
+                animations,
+                setAnimations,
+            }}
+        >
+            {props.children}
+        </CharacterAnimationsContext.Provider>
+    );
 };
 
 export const useCharacterAnimations = () => {
-    return useContext(CharacterAnimationContext);
+    return useContext(CharacterAnimationsContext);
 };

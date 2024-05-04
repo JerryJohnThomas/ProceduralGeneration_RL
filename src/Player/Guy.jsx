@@ -5,12 +5,14 @@ Command: npx gltfjsx@6.2.16 .\\public\\Players\\Guy\\Guy.glb
 
 import React, { useEffect, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
+import { useCharacterAnimations } from '../contexts/CharacterAnimations'
 
 const Guy = (props) => {
   const group = useRef()
-  // const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/Guy.glb`)
   const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`)
   const { actions, names } = useAnimations(animations, group)
+  const {setAnimations,animationIndex} = useCharacterAnimations();
+  
   // names
   // 0-"breathe"
   // 1-"dancingAnim"
@@ -18,7 +20,11 @@ const Guy = (props) => {
   // 3-"runningAnim"
 
   useEffect(()=>{
-    actions[names[3]].reset().fadeIn(0.5).play();
+    setAnimations(names);
+  },[names]);
+
+  useEffect(()=>{
+    actions[names[animationIndex]].reset().fadeIn(0.5).play();
   },[])
 
   return (
