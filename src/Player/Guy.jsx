@@ -44,7 +44,11 @@ const Guy = (props) => {
     }, [names]);
 
     useEffect(() => {
+        console.log("triggered", animationIndex);
         actions[names[animationIndex]].reset().fadeIn(0.5).play();
+        return () => {
+            actions[names[animationIndex]].fadeOut(0.5);
+          };
     }, [animationIndex]);
 
     const rotVel = {
@@ -106,16 +110,21 @@ const Guy = (props) => {
         // Animation
         // ANIMATION
         const movement = Math.abs(vel.x) + Math.abs(vel.z);
-        if (inTheAir.current && vel.y > 2) {
+        // console.log(movement, inTheAir.current, vel.y);
+        if (inTheAir.current && vel.y > 6) {
+            // console.log("jump");
             setAnimationIndex(2);
             // setAnimation("jump_up");
         } else if (inTheAir.current && vel.y < -5) {
-            setAnimationIndex(2);
+            // console.log("dance");
+            setAnimationIndex(1);
             // setAnimation("fall");
         } else if (movement > 1 || inTheAir.current) {
+            // console.log("run");
             setAnimationIndex(3);
             // setAnimation("run");
         } else {
+            // console.log("idle");
             setAnimationIndex(0);
             // setAnimation("idle");
         }
