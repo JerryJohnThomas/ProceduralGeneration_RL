@@ -6,6 +6,7 @@ import Woman from "./Woman";
 import { Floor, Light_Common, Platform } from "../Game/Components/Floor";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { useMemo } from "react";
+import InterfaceMovement from "./InterfaceMovement";
 
 function Box() {
     const size = 0.3;
@@ -36,17 +37,22 @@ function Player() {
         ],
         []
     );
+
+
     return (
         <>
+
             <KeyboardControls map={map}>
+                    {/* <InterfaceMovement /> */}
                 <Canvas style={{ height: "100vh" }} camera={{ position: [-3, 4, 7], fov: 50 }} shadows>
-                {/* <Canvas style={{ height: "100vh" }} camera={{ position: [-3, 9, -3.5], fov: 50 }} shadows> */}
-                {/* <Canvas style={{ height: "100vh" }} camera={{ position: [3, 3.5, 8.5], fov: 50 }} shadows> */}
+                    {/* <Canvas style={{ height: "100vh" }} camera={{ position: [-3, 9, -3.5], fov: 50 }} shadows> */}
+                    {/* <Canvas style={{ height: "100vh" }} camera={{ position: [3, 3.5, 8.5], fov: 50 }} shadows> */}
                     <Physics debug>
                         <OrbitControls />
                         <Guy />
                         <RigidBody type="fixed" name="floor" colliders="hull">
                             <Platform color="#0D5D56" size={[5, "x", 5]} position={[0, -1.25, 0]} />
+                            <Platform color="#0D5D56" size={[5, "x", 5]} position={[0, 1.25, -5]} />
                         </RigidBody>
                         <directionalLight castShadow position={[-1, 1, 1]} intensity={5} />
                     </Physics>

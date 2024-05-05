@@ -12,6 +12,7 @@ import { useFrame } from "@react-three/fiber";
 import { Curve, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
+import * as THREE from "three";
 
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 8;
@@ -26,7 +27,7 @@ const Guy = (props) => {
     const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);
     const { actions, names } = useAnimations(animations, group);
     const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
-    const [, get] = useKeyboardControls();
+    const [_, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
     // names
@@ -43,13 +44,39 @@ const Guy = (props) => {
         setAnimations(names);
     }, [names]);
 
+    // useEffect(() => {
+    //     // console.log("triggered", animationIndex, names[animationIndex]);
+    //     actions[names[animationIndex]].reset().fadeIn(0.5).play();
+    //     return () => {
+    //         actions[names[animationIndex]].fadeOut(0.5);
+    //     };
+    // }, [animationIndex]);
     useEffect(() => {
-        // console.log("triggered", animationIndex, names[animationIndex]);
-        actions[names[animationIndex]].reset().fadeIn(0.5).play();
-        return () => {
-            actions[names[animationIndex]].fadeOut(0.5);
-        };
-    }, [animationIndex]);
+        const animationAction = actions[names[animationIndex]];
+
+        if (animationAction) {
+            // Reset and fade in the animation
+            animationAction.reset().fadeIn(0.5);
+
+            // Set the loop mode based on the animation index
+            if (animationIndex === 2) {
+                // For 'runningAnim', play only once and pause at the last frame
+                animationAction.setLoop(THREE.LoopOnce, 1);
+                animationAction.clampWhenFinished = true; // Pause at the last frame
+            } else {
+                // For other animations, loop indefinitely
+                animationAction.setLoop(THREE.LoopRepeat);
+            }
+
+            // Play the animation
+            animationAction.play();
+
+            // Return a cleanup function to fade out the animation when the component unmounts
+            return () => {
+                animationAction.fadeOut(0.5);
+            };
+        }
+    }, [animationIndex, actions, names]);
 
     const rotVel = {
         x: 5,
@@ -101,7 +128,7 @@ const Guy = (props) => {
             vel.y = curVel.y;
         }
 
-        console.log(curVel);
+        // console.log(curVel);
 
         if (Math.abs(vel.y) > 6) {
             inTheAir.current = true;

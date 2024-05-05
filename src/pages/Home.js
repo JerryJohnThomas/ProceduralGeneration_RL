@@ -5,7 +5,7 @@ function Home() {
     return (
         <>
             <div>Home</div>
-            Lets see the world <span /> <span />
+            Lets see the world <span /> <span />cha
             <Link to="/world">Ep1</Link>
             <br />
             Lets see the Player <span /> 
