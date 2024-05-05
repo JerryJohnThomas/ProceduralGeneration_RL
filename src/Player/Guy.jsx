@@ -26,10 +26,9 @@ const Guy = (props) => {
     const rb = useRef();
     const [playerPos, setPlayerPos] = useState();
     const [playerRot, setPlayerRot] = useState();
-
     const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`);
     const { actions, names } = useAnimations(animations, group);
-    const { setAnimations, animationIndex } = useCharacterAnimations();
+    const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
     const [, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
@@ -45,7 +44,7 @@ const Guy = (props) => {
     }, [names]);
 
     useEffect(() => {
-        actions[names[animationIndex]].reset().fadeIn(0.5).play();
+        // actions[names[animationIndex]].reset().fadeIn(0.5).play();
     }, []);
 
     const rotVel = {
@@ -55,6 +54,7 @@ const Guy = (props) => {
     };
 
     useFrame(({ camera }) => {
+        if (rb.current == null) return;
         const curVel = rb.current.linvel();
         vel.x = 0;
         vel.y = 0;
@@ -88,16 +88,37 @@ const Guy = (props) => {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;
+        } else if (!inTheAir.current && landed.current) {
+            vel.y = 0;
         } else {
             vel.y = curVel.y;
         }
+
         if (Math.abs(vel.y) > 1) {
             inTheAir.current = true;
             landed.current = false;
         } else {
             inTheAir.current = false;
         }
+        // console.log(vel);
         rb.current.setLinvel(vel);
+
+        // Animation
+        // ANIMATION
+        const movement = Math.abs(vel.x) + Math.abs(vel.z);
+        if (inTheAir.current && vel.y > 2) {
+            setAnimationIndex(2);
+            // setAnimation("jump_up");
+        } else if (inTheAir.current && vel.y < -5) {
+            setAnimationIndex(2);
+            // setAnimation("fall");
+        } else if (movement > 1 || inTheAir.current) {
+            setAnimationIndex(3);
+            // setAnimation("run");
+        } else {
+            setAnimationIndex(0);
+            // setAnimation("idle");
+        }
 
         setPlayerRot(rb.current.rotation());
         setPlayerPos(rb.current.translation());
@@ -121,7 +142,7 @@ const Guy = (props) => {
             gravityScale={2.5}
             name="Guy"
         >
-            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
+            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]}  />
             <group ref={group} {...props} dispose={null}>
                 <group name="Scene">
                     <group name="Guy" rotation={[Math.PI / 2, 0, Math.PI]} scale={0.6}>
