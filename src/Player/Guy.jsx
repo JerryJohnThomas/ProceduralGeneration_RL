@@ -44,8 +44,8 @@ const Guy = (props) => {
     }, [names]);
 
     useEffect(() => {
-        // actions[names[animationIndex]].reset().fadeIn(0.5).play();
-    }, []);
+        actions[names[animationIndex]].reset().fadeIn(0.5).play();
+    }, [animationIndex]);
 
     const rotVel = {
         x: 5,
