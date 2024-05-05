@@ -13,8 +13,6 @@ import { Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
 
-const SPEED = 0.1;
-const JUMPSPEED = 1.5;
 
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 8;
@@ -26,17 +24,20 @@ const Guy = (props) => {
     const rb = useRef();
     const [playerPos, setPlayerPos] = useState();
     const [playerRot, setPlayerRot] = useState();
-    const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`);
+    const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);
     const { actions, names } = useAnimations(animations, group);
     const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
     const [, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
     // names
-    // 0-"breathe"
-    // 1-"dancingAnim"
-    // 2-"jumpingAnim"
-    // 3-"runningAnim"
+    // 'breathe'
+    // 'dancingAnim'
+    // 'jumpAnim1'
+    // 'jumpAnim2'
+    // 'jumpAnim3'
+    // 'jumpingAnim'
+    // 'runningAnim'
 
     // animations
     useEffect(() => {
@@ -44,11 +45,11 @@ const Guy = (props) => {
     }, [names]);
 
     useEffect(() => {
-        console.log("triggered", animationIndex);
+        // console.log("triggered", animationIndex, names[animationIndex]);
         actions[names[animationIndex]].reset().fadeIn(0.5).play();
         return () => {
             actions[names[animationIndex]].fadeOut(0.5);
-          };
+        };
     }, [animationIndex]);
 
     const rotVel = {
@@ -110,23 +111,18 @@ const Guy = (props) => {
         // Animation
         // ANIMATION
         const movement = Math.abs(vel.x) + Math.abs(vel.z);
-        // console.log(movement, inTheAir.current, vel.y);
+        console.log(movement);
         if (inTheAir.current && vel.y > 6) {
-            // console.log("jump");
             setAnimationIndex(2);
-            // setAnimation("jump_up");
         } else if (inTheAir.current && vel.y < -5) {
-            // console.log("dance");
-            setAnimationIndex(1);
-            // setAnimation("fall");
-        } else if (movement > 1 || inTheAir.current) {
-            // console.log("run");
+            setAnimationIndex(4);
+        } else if (inTheAir.current) {
             setAnimationIndex(3);
-            // setAnimation("run");
-        } else {
-            // console.log("idle");
+        } else if (movement>1){
+            setAnimationIndex(6);
+        }
+        else{
             setAnimationIndex(0);
-            // setAnimation("idle");
         }
 
         setPlayerRot(rb.current.rotation());
@@ -151,7 +147,7 @@ const Guy = (props) => {
             gravityScale={2.5}
             name="Guy"
         >
-            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]}  />
+            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
             <group ref={group} {...props} dispose={null}>
                 <group name="Scene">
                     <group name="Guy" rotation={[Math.PI / 2, 0, Math.PI]} scale={0.6}>
@@ -263,4 +259,4 @@ const Guy = (props) => {
 
 export default Guy;
 
-useGLTF.preload(`${process.env.PUBLIC_URL}/Players/WhiteGuy-transformed.glb`);
+useGLTF.preload(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);
