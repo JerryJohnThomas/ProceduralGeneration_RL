@@ -9,10 +9,9 @@ import { useCharacterAnimations } from "../contexts/CharacterAnimations";
 import { useCharacterMovements } from "../contexts/CharacterMovements";
 import { CapsuleCollider, RigidBody, euler, quat } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
-import { Vector3 } from "three";
+import { Curve, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
-
 
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 8;
@@ -89,17 +88,22 @@ const Guy = (props) => {
         // apply rotation to x and z to go in the right direction
         const eulerRot = euler().setFromQuaternion(quat(rb.current.rotation()));
         vel.applyEuler(eulerRot);
+        // console.log("air:", !inTheAir.current,"landed:", landed.current);
         if (get()[Controls.jump] && !inTheAir.current && landed.current) {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;
-        } else if (!inTheAir.current && landed.current) {
-            vel.y = 0;
-        } else {
+        }
+        // else if (!inTheAir.current && landed.current) {
+        // vel.y = 0;
+        // }
+        else {
             vel.y = curVel.y;
         }
 
-        if (Math.abs(vel.y) > 1) {
+        console.log(curVel);
+
+        if (Math.abs(vel.y) > 6) {
             inTheAir.current = true;
             landed.current = false;
         } else {
@@ -111,17 +115,18 @@ const Guy = (props) => {
         // Animation
         // ANIMATION
         const movement = Math.abs(vel.x) + Math.abs(vel.z);
-        console.log(movement);
-        if (inTheAir.current && vel.y > 6) {
+        //         console.log(movement);
+        if (inTheAir.current && vel.y > 6 && vel.y < 10) {
             setAnimationIndex(2);
         } else if (inTheAir.current && vel.y < -5) {
             setAnimationIndex(4);
         } else if (inTheAir.current) {
             setAnimationIndex(3);
-        } else if (movement>1){
+        } else if (movement > 1) {
             setAnimationIndex(6);
-        }
-        else{
+        } else if (!landed.current) {
+            setAnimationIndex(3);
+        } else {
             setAnimationIndex(0);
         }
 
@@ -144,7 +149,7 @@ const Guy = (props) => {
                     rb.current.setLinvel(curVel);
                 }
             }}
-            gravityScale={2.5}
+            gravityScale={1}
             name="Guy"
         >
             <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
