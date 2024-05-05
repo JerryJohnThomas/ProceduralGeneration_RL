@@ -5,4 +5,9 @@
     
 
 
-* Player cast shadow not working
+* Player cast shadow not working - fixed
+* player - jumping fixed
+* player not able to trun
+* animations triggering
+
+

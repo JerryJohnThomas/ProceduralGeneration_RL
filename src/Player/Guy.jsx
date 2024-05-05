@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useCharacterAnimations } from "../contexts/CharacterAnimations";
 import { useCharacterMovements } from "../contexts/CharacterMovements";
-import { RigidBody, euler, quat } from "@react-three/rapier";
+import { CapsuleCollider, RigidBody, euler, quat } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
@@ -18,7 +18,7 @@ const JUMPSPEED = 1.5;
 
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 8;
-const ROTATION_SPEED = 2.5;
+const ROTATION_SPEED = 5;
 const vel = new Vector3();
 
 const Guy = (props) => {
@@ -33,7 +33,6 @@ const Guy = (props) => {
     const [, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
-
     // names
     // 0-"breathe"
     // 1-"dancingAnim"
@@ -49,23 +48,28 @@ const Guy = (props) => {
         actions[names[animationIndex]].reset().fadeIn(0.5).play();
     }, []);
 
-    useFrame(({ camera }) => {
-        const rotVel = {
-            x: 0,
-            y: 0,
-            z: 0,
-        };
+    const rotVel = {
+        x: 5,
+        y: 0,
+        z: 0,
+    };
 
+    useFrame(({ camera }) => {
         const curVel = rb.current.linvel();
         vel.x = 0;
         vel.y = 0;
         vel.z = 0;
 
+        const rotVel = {
+            x: 0,
+            y: 0,
+            z: 0,
+        };
         if (get()[Controls.forward]) {
-            vel.z += MOVEMENT_SPEED;
+            vel.z -= MOVEMENT_SPEED;
         }
         if (get()[Controls.back]) {
-            vel.z -= MOVEMENT_SPEED;
+            vel.z += MOVEMENT_SPEED;
         }
         if (get()[Controls.left]) {
             rotVel.y += ROTATION_SPEED;
@@ -73,7 +77,8 @@ const Guy = (props) => {
         if (get()[Controls.right]) {
             rotVel.y -= ROTATION_SPEED;
         }
-        console.log(rotVel, vel);
+
+        // rb.current.setAngvel(angVel);
         rb.current.setAngvel(rotVel);
 
         // apply rotation to x and z to go in the right direction
@@ -98,40 +103,10 @@ const Guy = (props) => {
         setPlayerPos(rb.current.translation());
     });
 
-    //movements
-    useEffect(() => {
-        // const handleKeyDown = (event) => {
-        //     let curPos = rb.current.translation();
-        //     let newPosition = curPos;
-        //     switch (event.key) {
-        //         case "w":
-        //             newPosition["z"] -= SPEED;
-        //             break;
-        //         case "a":
-        //             newPosition["x"] -= SPEED;
-        //             break;
-        //         case "s":
-        //             newPosition["z"] += SPEED;
-        //             break;
-        //         case "d":
-        //             newPosition["x"] += SPEED;
-        //             break;
-        //         case " ":
-        //             newPosition["y"] += JUMPSPEED;
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     // if (["w", "a", "s", "d"].includes(event.key)) setPosition(newPosition);
-        //     rb.current.setTranslation(newPosition);
-        // };
-        // document.addEventListener("keydown", handleKeyDown);
-    }, []);
-
     return (
         <RigidBody
             ref={rb}
-            // colliders={false}
+            colliders={false}
             canSleep={false}
             enabledRotations={[false, true, false]}
             onCollisionEnter={(e) => {
@@ -144,8 +119,9 @@ const Guy = (props) => {
                 }
             }}
             gravityScale={2.5}
-            name="Guy1"
+            name="Guy"
         >
+            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
             <group ref={group} {...props} dispose={null}>
                 <group name="Scene">
                     <group name="Guy" rotation={[Math.PI / 2, 0, Math.PI]} scale={0.6}>

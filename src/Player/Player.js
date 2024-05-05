@@ -25,8 +25,6 @@ export const Controls = {
     jump: "jump",
 };
 
-
-
 function Player() {
     const map = useMemo(
         () => [
@@ -45,7 +43,7 @@ function Player() {
                     <Physics debug>
                         <OrbitControls />
                         <Guy />
-                        <RigidBody type="fixed" name="floor">
+                        <RigidBody type="fixed" name="floor" colliders="hull">
                             <Platform color="#0D5D56" size={[5, "x", 5]} position={[2, -1.25, 0]} />
                         </RigidBody>
                         <directionalLight castShadow position={[-1, 1, 1]} intensity={5} />
