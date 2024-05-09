@@ -6,31 +6,41 @@ Command: npx gltfjsx@6.2.16 .\\public\\Players\\Guy\\Guy.glb
 import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useCharacterAnimations } from "../contexts/CharacterAnimations";
-import { CapsuleCollider, RigidBody, euler, quat } from "@react-three/rapier";
-import { useFrame } from "@react-three/fiber";
+import { CapsuleCollider, RigidBody, euler, quat, vec3 } from "@react-three/rapier";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Curve, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
 import * as THREE from "three";
 import { useInterfaceButton } from "../contexts/InterfaceButton";
-
 const MOVEMENT_SPEED = 4.2;
-const JUMP_FORCE = 8;
+const JUMP_FORCE = 10;
 const ROTATION_SPEED = 5;
 const vel = new Vector3();
 
 const Guy = (props) => {
-    const { isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef } = useInterfaceButton();
+    const {
+        isButtonUpPressedRef,
+        isButtonDownPressedRef,
+        isButtonLeftPressedRef,
+        isButtonRightPressedRef,
+        isButtonJumpPressedRef,
+        isButtonFreeRoamToggledRef,
+    } = useInterfaceButton();
     const group = useRef();
     const rb = useRef();
-    const [playerPos, setPlayerPos] = useState();
-    const [playerRot, setPlayerRot] = useState();
+    const playerPos = useRef();
+    const playerRot = useRef();
     const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);
     const { actions, names } = useAnimations(animations, group);
     const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
     const [_, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
+    const { camera } = useThree();
+    const playerRef = useRef();
+    const offset = 10;
+    const diethreshold = -10;
     // names
     // 'breathe'
     // 'dancingAnim'
@@ -40,50 +50,50 @@ const Guy = (props) => {
     // 'jumpingAnim'
     // 'runningAnim'
 
+    let restartScene = () => {
+        // const position = vec3(0, 0, 0);
+        // rb.current.setTranslation(position, true);
+    };
+
     // animations
     useEffect(() => {
         setAnimations(names);
+        restartScene();
     }, [names]);
 
-    // useEffect(() => {
-    //     // console.log("triggered", animationIndex, names[animationIndex]);
-    //     actions[names[animationIndex]].reset().fadeIn(0.5).play();
-    //     return () => {
-    //         actions[names[animationIndex]].fadeOut(0.5);
-    //     };
-    // }, [animationIndex]);
+    useFrame(() => {
+        // console.log(camera);
+        if (!camera || !rb.current || playerPos.current == null || isButtonFreeRoamToggledRef.current) return;
+
+        let playerPosition = playerPos.current;
+        if (playerPosition.y < diethreshold) restartScene();
+        // Get the player's position
+        camera.position.set(playerPosition.x + offset, playerPosition.y + offset, playerPosition.z + offset);
+        camera.lookAt(playerPosition.x, playerPosition.y, playerPosition.z);
+    });
+
     useEffect(() => {
         const animationAction = actions[names[animationIndex]];
 
         if (animationAction) {
             // Reset and fade in the animation
+            // Set the loop mode based on the animation index
             animationAction.reset().fadeIn(0.5);
 
-            // Set the loop mode based on the animation index
             if (animationIndex === 2) {
-                // For 'runningAnim', play only once and pause at the last frame
                 animationAction.setLoop(THREE.LoopOnce, 1);
                 animationAction.clampWhenFinished = true; // Pause at the last frame
             } else {
-                // For other animations, loop indefinitely
                 animationAction.setLoop(THREE.LoopRepeat);
             }
 
-            // Play the animation
             animationAction.play();
 
-            // Return a cleanup function to fade out the animation when the component unmounts
             return () => {
                 animationAction.fadeOut(0.5);
             };
         }
     }, [animationIndex, actions, names]);
-
-    const rotVel = {
-        x: 5,
-        y: 0,
-        z: 0,
-    };
 
     useFrame(({ camera }) => {
         if (rb.current == null) return;
@@ -116,20 +126,13 @@ const Guy = (props) => {
         // apply rotation to x and z to go in the right direction
         const eulerRot = euler().setFromQuaternion(quat(rb.current.rotation()));
         vel.applyEuler(eulerRot);
-        // console.log("air:", !inTheAir.current,"landed:", landed.current);
-        if ((get()[Controls.jump] || isButtonJumpPressedRef.current)&& !inTheAir.current && landed.current) {
+        if ((get()[Controls.jump] || isButtonJumpPressedRef.current) && !inTheAir.current && landed.current) {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;
-        }
-        // else if (!inTheAir.current && landed.current) {
-        // vel.y = 0;
-        // }
-        else {
+        } else {
             vel.y = curVel.y;
         }
-
-        // console.log(curVel);
 
         if (Math.abs(vel.y) > 6) {
             inTheAir.current = true;
@@ -137,10 +140,8 @@ const Guy = (props) => {
         } else {
             inTheAir.current = false;
         }
-        // console.log(vel);
         rb.current.setLinvel(vel);
 
-        // Animation
         // ANIMATION
         const movement = Math.abs(vel.x) + Math.abs(vel.z);
         //         console.log(movement);
@@ -157,9 +158,10 @@ const Guy = (props) => {
         } else {
             setAnimationIndex(0);
         }
-
-        setPlayerRot(rb.current.rotation());
-        setPlayerPos(rb.current.translation());
+        playerPos.current =rb.current.translation();
+        playerRot.current  =rb.current.rotation();
+        // setPlayerRot(rb.current.rotation());
+        // setPlayerPos(rb.current.translation());
     });
 
     return (
@@ -177,7 +179,7 @@ const Guy = (props) => {
                     rb.current.setLinvel(curVel);
                 }
             }}
-            gravityScale={1}
+            gravityScale={2}
             name="Guy"
         >
             <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
