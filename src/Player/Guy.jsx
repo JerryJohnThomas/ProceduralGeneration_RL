@@ -6,13 +6,13 @@ Command: npx gltfjsx@6.2.16 .\\public\\Players\\Guy\\Guy.glb
 import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useCharacterAnimations } from "../contexts/CharacterAnimations";
-import { useCharacterMovements } from "../contexts/CharacterMovements";
 import { CapsuleCollider, RigidBody, euler, quat } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import { Curve, Vector3 } from "three";
 import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
 import * as THREE from "three";
+import { useInterfaceButton } from "../contexts/InterfaceButton";
 
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 8;
@@ -20,6 +20,7 @@ const ROTATION_SPEED = 5;
 const vel = new Vector3();
 
 const Guy = (props) => {
+    const { isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef } = useInterfaceButton();
     const group = useRef();
     const rb = useRef();
     const [playerPos, setPlayerPos] = useState();
@@ -96,16 +97,16 @@ const Guy = (props) => {
             y: 0,
             z: 0,
         };
-        if (get()[Controls.forward]) {
+        if (get()[Controls.forward] || isButtonUpPressedRef.current) {
             vel.z -= MOVEMENT_SPEED;
         }
-        if (get()[Controls.back]) {
+        if (get()[Controls.back] || isButtonDownPressedRef.current) {
             vel.z += MOVEMENT_SPEED;
         }
-        if (get()[Controls.left]) {
+        if (get()[Controls.left] || isButtonLeftPressedRef.current) {
             rotVel.y += ROTATION_SPEED;
         }
-        if (get()[Controls.right]) {
+        if (get()[Controls.right] || isButtonRightPressedRef.current) {
             rotVel.y -= ROTATION_SPEED;
         }
 
@@ -116,7 +117,7 @@ const Guy = (props) => {
         const eulerRot = euler().setFromQuaternion(quat(rb.current.rotation()));
         vel.applyEuler(eulerRot);
         // console.log("air:", !inTheAir.current,"landed:", landed.current);
-        if (get()[Controls.jump] && !inTheAir.current && landed.current) {
+        if ((get()[Controls.jump] || isButtonJumpPressedRef.current)&& !inTheAir.current && landed.current) {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;

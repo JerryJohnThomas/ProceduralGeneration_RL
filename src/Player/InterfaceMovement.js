@@ -1,58 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./InterfaceMovement.css";
-import { useKeyboardControls } from "@react-three/drei";
+import { useInterfaceButton } from "../contexts/InterfaceButton";
 
 function InterfaceMovement() {
-    const [set, get] = useKeyboardControls();
-    const moveButtonHandler = (key) => {
-        // alert(key);
-        // Create a new keyboard event with the specified key
-        const event = new KeyboardEvent("keydown", { key });
-        // Dispatch the event on the document
-        console.log(event);
-        set(key);
-        console.log(set);
-        // document.dispatchEvent(event);
-        // Dispatch a synthetic keyboard event
-        document.dispatchEvent(
-            new KeyboardEvent("keydown", {
-                key: key,
-                bubbles: true,
-                cancelable: true,
-                keyCode: key.charCodeAt(0),
-                which: key.charCodeAt(0),
-            })
-        );
+    const { isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef } = useInterfaceButton();
+
+    const moveButtonHandler = (key, isPressed) => {
+        switch (key.toLowerCase()) {
+            case "w":
+                isButtonUpPressedRef.current = isPressed;
+                break;
+            case "s":
+                isButtonDownPressedRef.current = isPressed;
+                break;
+            case "a":
+                isButtonLeftPressedRef.current = isPressed;
+                break;
+            case "d":
+                isButtonRightPressedRef.current = isPressed;
+                break;
+            case " ":
+                isButtonJumpPressedRef.current = isPressed;
+                break;
+            default:
+                break;
+        }
     };
+
     return (
         <>
-        <div className="ButtonContainer_left">
-            <div>
-                <button className="button_move" onClick={() => moveButtonHandler("W")} tabIndex={0}>
-                    UP
-                </button>
-            </div>
-            <div>
-                <button className="button_move" onClick={() => moveButtonHandler("s")} tabIndex={0}>
-                    DOWN
-                </button>
-                <button className="button_move" onClick={() => moveButtonHandler("a")} tabIndex={0}>
-                    LEFT
-                </button>
-                <button className="button_move" onClick={() => moveButtonHandler("d")} tabIndex={0}>
-                    RIGHT
-                </button>
-            </div>
+            <div className="ButtonContainer_left">
+                <div>
+                    <button className="button_move" onMouseDown={() => moveButtonHandler("W", true)} onMouseUp={() => moveButtonHandler("W", false)} onMouseOut={() => moveButtonHandler("W", false)} tabIndex={0}>
+                        UP
+                    </button>
+                </div>
+                <div>
+                    <button className="button_move" onMouseDown={() => moveButtonHandler("a", true)} onMouseUp={() => moveButtonHandler("a", false)} onMouseOut={() => moveButtonHandler("a", false)} tabIndex={0}>
+                        LEFT
+                    </button>
+                    <button className="button_move" onMouseDown={() => moveButtonHandler("s", true)} onMouseUp={() => moveButtonHandler("s", false)} onMouseOut={() => moveButtonHandler("s", false)} tabIndex={0}>
+                        DOWN
+                    </button>
+                    <button className="button_move" onMouseDown={() => moveButtonHandler("d", true)} onMouseUp={() => moveButtonHandler("d", false)} onMouseOut={() => moveButtonHandler("d", false)} tabIndex={0}>
+                        RIGHT
+                    </button>
+                </div>
 
-        </div>
-        <div className="ButtonContainer_right">
-
-                <button className="button_move" onClick={() => moveButtonHandler(" ")} tabIndex={0}>
+            </div>
+            <div className="ButtonContainer_right">
+                <button className="button_move" onMouseDown={() => moveButtonHandler(" ", true)} onMouseUp={() => moveButtonHandler(" ", false)} onMouseOut={() => moveButtonHandler(" ", false)} tabIndex={0}>
                     JUMP
                 </button>
             </div>
         </>
-
     );
 }
 

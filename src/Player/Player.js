@@ -38,12 +38,10 @@ function Player() {
         []
     );
 
-
     return (
         <>
-
             <KeyboardControls map={map}>
-                    {/* <InterfaceMovement /> */}
+                <InterfaceMovement />
                 <Canvas style={{ height: "100vh" }} camera={{ position: [-3, 4, 7], fov: 50 }} shadows>
                     {/* <Canvas style={{ height: "100vh" }} camera={{ position: [-3, 9, -3.5], fov: 50 }} shadows> */}
                     {/* <Canvas style={{ height: "100vh" }} camera={{ position: [3, 3.5, 8.5], fov: 50 }} shadows> */}
