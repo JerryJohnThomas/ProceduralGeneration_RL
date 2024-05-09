@@ -11,6 +11,7 @@ export const InterfaceButtonProvider = (props) => {
     const isButtonJumpPressedRef = useRef(false);
     const isButtonFreeRoamToggledRef = useRef(false);
     const isButtonDebugToggledRef = useRef(true);
+    const isButtonResetToggledRef = useRef(true);
     const [isButtonDebugToggledState,setisButtonDebugToggledState] = useState(true);
 
     return (
@@ -24,7 +25,8 @@ export const InterfaceButtonProvider = (props) => {
                 isButtonFreeRoamToggledRef,
                 isButtonDebugToggledRef,
                 isButtonDebugToggledState,
-                setisButtonDebugToggledState
+                setisButtonDebugToggledState,
+                isButtonResetToggledRef
             }}
         >
             {props.children}

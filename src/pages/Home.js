@@ -11,7 +11,8 @@ function Home() {
             Lets see the Player <span /> 
             <Link to="/player">Ep2 </Link>
 
-            Reddit guys please click here, no native suport for routing in github pages sadly <span /> 
+            <br />
+            Reddit guy  s please click here, no native suport for routing in github pages sadly <span /> 
             <Link to="/player">Reddit</Link>
         </>
     );

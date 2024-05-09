@@ -26,6 +26,7 @@ const Guy = (props) => {
         isButtonRightPressedRef,
         isButtonJumpPressedRef,
         isButtonFreeRoamToggledRef,
+        isButtonResetToggledRef,
     } = useInterfaceButton();
     const group = useRef();
     const rb = useRef();
@@ -51,8 +52,9 @@ const Guy = (props) => {
     // 'runningAnim'
 
     let restartScene = () => {
-        // const position = vec3(0, 0, 0);
-        // rb.current.setTranslation(position, true);
+        const position = vec3(0, 0, 0);
+        rb.current.setTranslation(position, true);
+        isButtonResetToggledRef.current = false;
     };
 
     // animations
@@ -63,10 +65,11 @@ const Guy = (props) => {
 
     useFrame(() => {
         // console.log(camera);
+        
         if (!camera || !rb.current || playerPos.current == null || isButtonFreeRoamToggledRef.current) return;
 
         let playerPosition = playerPos.current;
-        if (playerPosition.y < diethreshold) restartScene();
+        if ( isButtonResetToggledRef.current || playerPosition.y < diethreshold) restartScene();
         // Get the player's position
         camera.position.set(playerPosition.x + offset, playerPosition.y + offset, playerPosition.z + offset);
         camera.lookAt(playerPosition.x, playerPosition.y, playerPosition.z);
