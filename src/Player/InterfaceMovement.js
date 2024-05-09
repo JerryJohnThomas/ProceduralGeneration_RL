@@ -17,7 +17,6 @@ function InterfaceMovement() {
     } = useInterfaceButton();
 
     const moveButtonHandler = (key, isPressed) => {
-        console.log("boom");
         switch (key.toLowerCase()) {
             case "w":
                 isButtonUpPressedRef.current = isPressed;
