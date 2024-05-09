@@ -69,7 +69,9 @@ const Guy = (props) => {
         if (!camera || !rb.current || playerPos.current == null || isButtonFreeRoamToggledRef.current) return;
 
         let playerPosition = playerPos.current;
-        if ( isButtonResetToggledRef.current || playerPosition.y < diethreshold) restartScene();
+        // uncomment this
+        // if ( isButtonResetToggledRef.current || playerPosition.y < diethreshold) restartScene();
+        if ( isButtonResetToggledRef.current ) restartScene();
         // Get the player's position
         camera.position.set(playerPosition.x + offset, playerPosition.y + offset, playerPosition.z + offset);
         camera.lookAt(playerPosition.x, playerPosition.y, playerPosition.z);
