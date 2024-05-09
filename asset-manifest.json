@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/ProceduralGeneration_RL/static/css/main.97ed341a.css",
-    "main.js": "/ProceduralGeneration_RL/static/js/main.be72394c.js",
+    "main.js": "/ProceduralGeneration_RL/static/js/main.1581ca67.js",
     "static/js/451.d292ecf6.chunk.js": "/ProceduralGeneration_RL/static/js/451.d292ecf6.chunk.js",
     "static/js/453.6c7ddea4.chunk.js": "/ProceduralGeneration_RL/static/js/453.6c7ddea4.chunk.js",
     "index.html": "/ProceduralGeneration_RL/index.html",
     "main.97ed341a.css.map": "/ProceduralGeneration_RL/static/css/main.97ed341a.css.map",
-    "main.be72394c.js.map": "/ProceduralGeneration_RL/static/js/main.be72394c.js.map",
+    "main.1581ca67.js.map": "/ProceduralGeneration_RL/static/js/main.1581ca67.js.map",
     "451.d292ecf6.chunk.js.map": "/ProceduralGeneration_RL/static/js/451.d292ecf6.chunk.js.map",
     "453.6c7ddea4.chunk.js.map": "/ProceduralGeneration_RL/static/js/453.6c7ddea4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.97ed341a.css",
-    "static/js/main.be72394c.js"
+    "static/js/main.1581ca67.js"
   ]
 }
