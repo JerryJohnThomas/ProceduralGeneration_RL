@@ -49,7 +49,7 @@ function InterfaceMovement() {
             <div className="ButtonContainer_left">
                 <div>
                     <button
-                        className="button_move"
+                        className="button_move disable-select"
                         onMouseDown={() => moveButtonHandler("W", true)}
                         onMouseUp={() => moveButtonHandler("W", false)}
                         onTouchStart={() => moveButtonHandler("W", true)}
@@ -62,7 +62,7 @@ function InterfaceMovement() {
                 </div>
                 <div>
                     <button
-                        className="button_move"
+                        className="button_move disable-select"
                         onMouseDown={() => moveButtonHandler("a", true)}
                         onMouseUp={() => moveButtonHandler("a", false)}
                         onTouchStart={() => moveButtonHandler("a", true)}
@@ -73,7 +73,7 @@ function InterfaceMovement() {
                         LEFT
                     </button>
                     <button
-                        className="button_move"
+                        className="button_move disable-select"
                         onMouseDown={() => moveButtonHandler("s", true)}
                         onMouseUp={() => moveButtonHandler("s", false)}
                         onTouchStart={() => moveButtonHandler("s", true)}
@@ -84,7 +84,7 @@ function InterfaceMovement() {
                         DOWN
                     </button>
                     <button
-                        className="button_move"
+                        className="button_move disable-select"
                         onMouseDown={() => moveButtonHandler("d", true)}
                         onMouseUp={() => moveButtonHandler("d", false)}
                         onTouchStart={() => moveButtonHandler("d", true)}
@@ -97,17 +97,17 @@ function InterfaceMovement() {
                 </div>
             </div>
             <div className="ButtonContainer_right">
-                <button className="button_move" onClick={() => moveButtonHandler("reset", !isButtonResetToggledRef.current)} tabIndex={0}>
+                <button className="button_move disable-select" onClick={() => moveButtonHandler("reset", !isButtonResetToggledRef.current)} tabIndex={0}>
                     RESET
                 </button>
-                <button className="button_move" onClick={() => setisButtonDebugToggledState((x) => !x)} tabIndex={0}>
+                <button className="button_move disable-select" onClick={() => setisButtonDebugToggledState((x) => !x)} tabIndex={0}>
                     DEBUG
                 </button>
-                <button className="button_move" onClick={() => moveButtonHandler("free", !isButtonFreeRoamToggledRef.current)} tabIndex={0}>
+                <button className="button_move disable-select" onClick={() => moveButtonHandler("free", !isButtonFreeRoamToggledRef.current)} tabIndex={0}>
                     FREE SEE
                 </button>
                 <button
-                    className="button_move"
+                    className="button_move disable-select"
                     onMouseDown={() => moveButtonHandler(" ", true)}
                     onMouseUp={() => moveButtonHandler(" ", false)}
                     onTouchStart={() => moveButtonHandler(" ", false)}
