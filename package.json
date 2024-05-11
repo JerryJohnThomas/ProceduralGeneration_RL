@@ -2,7 +2,7 @@
   "name": "pc_gen",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jerryjohnthomas.github.io/",
+  "homepage": "https://jerryjohnthomas.github.io",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@react-three/cannon": "^6.6.0",
