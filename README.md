@@ -40,3 +40,10 @@ Agent
 
 
 
+# SDLC instructions
+
+to deploy to netlify
+* `netlify deploy -p`
+
+to deploy to github pages
+* `npm run deploy`

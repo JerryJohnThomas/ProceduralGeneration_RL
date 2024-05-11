@@ -12,7 +12,8 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<World />} />
+                {/* <Route path="/" element={<World />} /> */}
+                <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/world" element={<World />} />
                 <Route path="/env" element={<Env1 />} />
