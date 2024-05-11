@@ -46,6 +46,7 @@ netlify
 * `netlify deploy -p`
 * added node version, ci as false in env variables
 * pointing from netlify branch, as home page is different
+* added a redirects file to public
 
 to deploy
 * any changes in main, is put into netlify branch by github actions - automerge
