@@ -17,6 +17,8 @@ function Home() {
 
             <br/>
             Deployed to Netlify too
+
+            Github actions updating across branches
         </>
     );
 }
