@@ -16,8 +16,9 @@ function Env1() {
         // Generate random position within a range
         const range = 20;
         const randomX = Math.random() * range - range / 2;
+        const randomY = Math.random() * range/4 - range / 8;
         const randomZ = Math.random() * range - range / 2;
-        const randomPosition = [randomX + delta, 0 + delta, randomZ + delta];
+        const randomPosition = [randomX + delta, randomY + delta, randomZ + delta];
         addPlatform(randomPosition);
     };
     const handleKeyDown = (event) => {
