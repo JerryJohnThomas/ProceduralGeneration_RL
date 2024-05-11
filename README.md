@@ -42,8 +42,15 @@ Agent
 
 # SDLC instructions
 
-to deploy to netlify
+netlify
 * `netlify deploy -p`
+* added node version, ci as false in env variables
+* pointing from netlify branch, as home page is different
 
-to deploy to github pages
+to deploy
+* any changes in main, is put into netlify branch by github actions - automerge
+* any changes to netlify branch triggers the netlify pipeline
+* at the moment it is a crone job every day at 12 o clock midnight
+
+to deploy to github pages from main
 * `npm run deploy`
