@@ -14,6 +14,9 @@ function Home() {
             <br />
             Reddit guy  s please click here, no native suport for routing in github pages sadly <span /> 
             <Link to="/player">Reddit</Link>
+
+            <br/>
+            Deployed to Netlify too
         </>
     );
 }
