@@ -4,18 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { CharacterAnimationsProvider } from "./contexts/CharacterAnimations";
-import { CharacterMovementsProvider } from "./contexts/CharacterMovements";
 import { InterfaceButtonProvider } from "./contexts/InterfaceButton";
+import { WorldEnvProvider } from "./contexts/WorldEnv";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <CharacterAnimationsProvider>
-            <CharacterMovementsProvider>
+            <WorldEnvProvider>
                 <InterfaceButtonProvider>
                     <App />
                 </InterfaceButtonProvider>
-            </CharacterMovementsProvider>
+            </WorldEnvProvider>
         </CharacterAnimationsProvider>
     </React.StrictMode>
 );
