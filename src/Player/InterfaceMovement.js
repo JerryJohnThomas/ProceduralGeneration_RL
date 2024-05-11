@@ -109,9 +109,9 @@ function InterfaceMovement() {
                     className="button_move disable-select"
                     onMouseDown={() => moveButtonHandler(" ", true)}
                     onMouseUp={() => moveButtonHandler(" ", false)}
-                    onTouchStart={() => moveButtonHandler(" ", false)}
+                    onTouchStart={() => moveButtonHandler(" ", true)}
                     onMouseOut={() => moveButtonHandler(" ", false)}
-                    onTouchEnd={() => moveButtonHandler(" ", false)}
+                    onTouchEnd={() => moveButtonHandler(" ", true)}
                     tabIndex={0}
                 >
                     JUMP
