@@ -62,7 +62,7 @@ function Home() {
                 </div>
                 <div className="subtitle">References</div>
                 <div className="episode_description">
-                    Offcial Demo of the Paper - <span />
+                    Official Demo of the Paper - <span />
                     <a href="https://www.youtube.com/watch?v=kNj0qcc6Fpg" target="_blank">
                         here
                     </a>
