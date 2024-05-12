@@ -70,7 +70,7 @@ function Home() {
 
                 <div className="episode_description connect">
                     Connect with me - <span />
-                    <a href="linkedin.com/in/jerry-john-thomas" target="_blank">
+                    <a href="https://linkedin.com/in/jerry-john-thomas" target="_blank">
                     <FaLinkedin className="bitDown"/> 
                     </a>
                     <span /> <span />
