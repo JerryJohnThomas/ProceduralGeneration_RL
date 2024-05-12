@@ -19,7 +19,7 @@ function App() {
                 <Route path="/env" element={<Env1 />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/raycaster" element={<RayCastermini />} />
-                <Route path="/ProceduralGeneration_RL" element={<Player />} />
+                <Route path="/ProceduralGeneration_RL" element={<Home />} />
                 {/* <Route path="/ProceduralGeneration_RL" element={<Home />} /> */}
                 {/* <Route path="/*" element={<Page404 />} /> */}
             </Routes>
