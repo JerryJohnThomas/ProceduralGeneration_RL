@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/ProceduralGeneration_RL/static/css/main.66b4c715.css",
-    "main.js": "/ProceduralGeneration_RL/static/js/main.1050cfcd.js",
+    "main.css": "/ProceduralGeneration_RL/static/css/main.0af954e7.css",
+    "main.js": "/ProceduralGeneration_RL/static/js/main.d5210ea3.js",
     "static/js/451.d292ecf6.chunk.js": "/ProceduralGeneration_RL/static/js/451.d292ecf6.chunk.js",
     "static/js/453.6c7ddea4.chunk.js": "/ProceduralGeneration_RL/static/js/453.6c7ddea4.chunk.js",
     "index.html": "/ProceduralGeneration_RL/index.html",
-    "main.66b4c715.css.map": "/ProceduralGeneration_RL/static/css/main.66b4c715.css.map",
-    "main.1050cfcd.js.map": "/ProceduralGeneration_RL/static/js/main.1050cfcd.js.map",
+    "main.0af954e7.css.map": "/ProceduralGeneration_RL/static/css/main.0af954e7.css.map",
+    "main.d5210ea3.js.map": "/ProceduralGeneration_RL/static/js/main.d5210ea3.js.map",
     "451.d292ecf6.chunk.js.map": "/ProceduralGeneration_RL/static/js/451.d292ecf6.chunk.js.map",
     "453.6c7ddea4.chunk.js.map": "/ProceduralGeneration_RL/static/js/453.6c7ddea4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.66b4c715.css",
-    "static/js/main.1050cfcd.js"
+    "static/css/main.0af954e7.css",
+    "static/js/main.d5210ea3.js"
   ]
 }
