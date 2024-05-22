@@ -9,6 +9,12 @@
     
 
 }
+/* .flexContainer1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} */
 
 .page1{
     padding-top: 5vh;
@@ -28,6 +34,8 @@
     width: 50vw;
     font-size: 20px;
 }
+
+
 
 .worldHomeDemo{
     position: absolute;
@@ -94,4 +102,43 @@
 
 .bitDown{
     padding-top: 0px;
+}
+
+/* Media query for devices with a maximum width of 600px */
+@media only screen and (max-width: 800px) {
+    /* Your CSS rules here */
+    .worldHomeDemo{
+        position: absolute;
+        top:60vh;
+        right:10vw;
+        width: 80vw;
+        height: 75vh !important;
+        overflow: hidden;
+        /* background-color: aqua; */
+        /* padding-left: 20vw; */
+        /* margin-left: 20vw; */
+    }
+   
+    .spacer{
+        height: 50px;
+    }
+
+    .mob_canvas_spacer{
+        height: 30vh;
+    }
+ 
+    .introPara{
+        margin-top: 3vh;
+        padding-left: 5vw;
+        width: 80vw;
+        font-size: 20px;
+    }
+    
+    .homeTitle{
+        font-size: 50px;
+        font-family: 'Playfair';
+        
+        /* color: white; */
+    }
+    
 }
