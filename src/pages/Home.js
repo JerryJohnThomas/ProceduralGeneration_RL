@@ -6,23 +6,25 @@ import { FaLinkedin } from "react-icons/fa";
 import { CiLinkedin } from "react-icons/ci";
 import { FaMedium } from "react-icons/fa6";
 function Home() {
-
     return (
         <div className="homeContainer">
             <div className="page1">
                 <div className="homeTitle">Procedural Generation via Adversarial RL</div>
-
-                <div className="introPara">
-                    This is a Paper by Seed (R&D of EA sports), where they attempt to make a platformer game where the Platform generator and the
-                    Player Solver works together to reach the end platfrom from the starting Platform
-                    <br />
-                    <br />
-                    Here both the platformer generator and the player are Reinforcement Learning Agents, where they have their rewards intertwined.
-                </div>
-                <div className="worldHomeDemo">
-                    <World orbitalControllable={true} initialcampov={[10, 5, 13]} />
+                <div className="flexContainer1">
+                    <div className="introPara">
+                        This is a Paper by Seed (R&D of EA sports), where they attempt to make a platformer game where the Platform generator and the
+                        Player Solver works together to reach the end platfrom from the starting Platform
+                        <br />
+                        <br />
+                        Here both the platformer generator and the player are Reinforcement Learning Agents, where they have their rewards
+                        intertwined.
+                    </div>
+                    <div className="worldHomeDemo">
+                        <World orbitalControllable={true} initialcampov={[10, 5, 13]} />
+                    </div>
                 </div>
             </div>
+            <div className="mob_canvas_spacer"></div>
 
             <div className="page1">
                 <div className="subtitle">Follow Along the Journey here</div>
@@ -71,15 +73,14 @@ function Home() {
                 <div className="episode_description connect">
                     Connect with me - <span />
                     <a href="https://linkedin.com/in/jerry-john-thomas" target="_blank">
-                    <FaLinkedin className="bitDown"/> 
+                        <FaLinkedin className="bitDown" />
                     </a>
                     <span /> <span />
                     <a href="https://medium.com/@jerryjohnthomas" target="_blank">
                         <FaMedium />
                     </a>
-                    
-
                 </div>
+                <div className="spacer"></div> 
             </div>
         </div>
     );
