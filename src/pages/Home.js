@@ -5,6 +5,7 @@ import World from "../Game/World";
 import { FaLinkedin } from "react-icons/fa";
 import { CiLinkedin } from "react-icons/ci";
 import { FaMedium } from "react-icons/fa6";
+import { FaGithub } from "react-icons/fa";
 function Home() {
     return (
         <div className="homeContainer">
@@ -26,7 +27,7 @@ function Home() {
             </div>
             <div className="mob_canvas_spacer"></div>
 
-            <div className="page1">
+            <div className="page2">
                 <div className="subtitle">Follow Along the Journey here</div>
                 <div className="episode_container">
                     <div className="episode_title">Episode 1</div>
@@ -69,6 +70,12 @@ function Home() {
                         here
                     </a>
                 </div>
+                <div className="episode_description">
+                    Github Code - <span />
+                    <a href="https://github.com/JerryJohnThomas/ProceduralGeneration_RL" target="_blank">
+                        <FaGithub />
+                    </a>
+                </div>
 
                 <div className="episode_description connect">
                     Connect with me - <span />
@@ -80,7 +87,7 @@ function Home() {
                         <FaMedium />
                     </a>
                 </div>
-                <div className="spacer"></div> 
+                {/* <div className="spacer"></div>  */}
             </div>
         </div>
     );
