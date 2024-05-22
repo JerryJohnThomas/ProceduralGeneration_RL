@@ -13,7 +13,7 @@ function Home() {
                 <div className="flexContainer1">
                     <div className="introPara">
                         This is a Paper by Seed (R&D of EA sports), where they attempt to make a platformer game where the Platform generator and the
-                        Player Solver works together to reach the end platfrom from the starting Platform
+                        Player Solver works together to reach the end platform from the starting Platform
                         <br />
                         <br />
                         Here both the platformer generator and the player are Reinforcement Learning Agents, where they have their rewards
