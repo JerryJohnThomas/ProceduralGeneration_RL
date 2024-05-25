@@ -84,18 +84,20 @@ function Env1() {
                 <Physics debug={isButtonDebugToggledState}>
                     <PerspectiveCamera makeDefault position={[0, 7, 13]} />
                     <Light_Common />
-                    {agents.current.map((agent, id) => {
+                    {agents.map((agent, id) => {
                         return (
                             <GuyGym
                                 agentId={agent.agentId.current}
-                                key={agent.agentId}
+                                key={agent.agentId.current}
                                 rb={agent.rb}
                                 isButtonUpPressedRef={agent.isButtonUpPressedRef}
                                 isButtonDownPressedRef={agent.isButtonDownPressedRef}
                                 isButtonLeftPressedRef={agent.isButtonLeftPressedRef}
                                 isButtonRightPressedRef={agent.isButtonRightPressedRef}
                                 isButtonJumpPressedRef={agent.isButtonJumpPressedRef}
+                                startingPos={agent.startingPos}
                                 moveAgent={moveAgent}
+                                addAgent={addAgent}
                             />
                         );
                     })}

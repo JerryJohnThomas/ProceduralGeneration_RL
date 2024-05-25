@@ -2,18 +2,14 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import { vec3 } from "@react-three/rapier";
 import * as THREE from "three";
 import { Actions, MOVEMENT_SPEED, JUMP_FORCE, ROTATION_SPEED } from "../Class/Actions";
-
 import { useFrame } from "@react-three/fiber";
 
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
+    let AgentsCount = 2;
 
-    // const agents = useRef([]);
-    let AgentsCount = 1;
-    const [, forceUpdate] = useState(0); // Used to force re-render
-
-    const InitializeAgent = (id) => ({
+    const InitializeAgent = (id, startingPos={x:0,y:2,z:0}) => ({
         agentId : useRef(id),
         rb: useRef(null),
         isButtonUpPressedRef: useRef(false),
@@ -21,6 +17,7 @@ export const PlayerProvider = ({ children }) => {
         isButtonLeftPressedRef: useRef(false),
         isButtonRightPressedRef: useRef(false),
         isButtonJumpPressedRef: useRef(false),
+        startingPos: startingPos,
         timeoutRefs: useRef({
             up: { current: null },
             down: { current: null },
@@ -29,63 +26,67 @@ export const PlayerProvider = ({ children }) => {
             jump: { current: null },
         }),
     });
-    const agents= useRef( [InitializeAgent(0)]);
+    // const [agents, setAgents] = useState([InitializeAgent(0, {x:0,y:-2,z:0}), InitializeAgent(1, {x:0,y:-2,z:4})]);
+    // const [agents, setAgents] = useState([InitializeAgent(0, {x:-2,y:3,z:0})]);
+    const [agents, setAgents] = useState([InitializeAgent(0, {x:2,y:3,z:0}),InitializeAgent(1, {x:-2,y:3,z:0})]);
 
-    const addAgent = () =>{
-        // agents.current.push(InitializeAgent(AgentsCount));
+    // useEffect(()=>{
+    //     addAgent();
+    // },[]);
+
+    const addAgent = () => {
+        setAgents(prevAgents => [...prevAgents, InitializeAgent(AgentsCount)]);
         AgentsCount++;
-        forceUpdate(n => n + 1);
-    }
+    };
 
     const getPosition = (agentIndex) => {
-        return agents.current[agentIndex].rb.current.translation();
+        return agents[agentIndex].rb?.translation();
     };
 
     const getRotation = (agentIndex) => {
-        return agents.current[agentIndex].rb.current.rotation();
+        return agents[agentIndex].rb?.rotation();
     };
 
     const resetAgent = (agentIndex) => {
         const position = vec3(0, 0, 0);
-        agents.current[agentIndex].rb.current.setTranslation(position, true);
+        agents[agentIndex].rb?.setTranslation(position, true);
     };
 
     const setButtonPress = (agentIndex, ref, timeoutKey, duration) => {
         ref.current = true;
 
-        if (agents.current[agentIndex].timeoutRefs.current[timeoutKey]) {
-            clearTimeout(agents.current[agentIndex].timeoutRefs.current[timeoutKey]);
+        if (agents[agentIndex].timeoutRefs[timeoutKey]) {
+            clearTimeout(agents[agentIndex].timeoutRefs[timeoutKey]);
         }
 
-        agents.current[agentIndex].timeoutRefs.current[timeoutKey] = setTimeout(() => {
+        agents[agentIndex].timeoutRefs[timeoutKey] = setTimeout(() => {
             ref.current = false;
-            agents.current[agentIndex].timeoutRefs.current[timeoutKey] = null;
+            agents[agentIndex].timeoutRefs[timeoutKey] = null;
         }, duration);
     };
 
     const moveAgent = (agentIndex, action, duration = 100) => {
         switch (action) {
             case Actions.FORWARD:
-                setButtonPress(agentIndex, agents.current[agentIndex].isButtonUpPressedRef, "up", duration);
+                setButtonPress(agentIndex, agents[agentIndex].isButtonUpPressedRef, "up", duration);
                 break;
             case Actions.BACKWARD:
-                setButtonPress(agentIndex, agents.current[agentIndex].isButtonDownPressedRef, "down", duration);
+                setButtonPress(agentIndex, agents[agentIndex].isButtonDownPressedRef, "down", duration);
                 break;
             case Actions.LEFT:
-                setButtonPress(agentIndex, agents.current[agentIndex].isButtonLeftPressedRef, "left", duration);
+                setButtonPress(agentIndex, agents[agentIndex].isButtonLeftPressedRef, "left", duration);
                 break;
             case Actions.RIGHT:
-                setButtonPress(agentIndex, agents.current[agentIndex].isButtonRightPressedRef, "right", duration);
+                setButtonPress(agentIndex, agents[agentIndex].isButtonRightPressedRef, "right", duration);
                 break;
             case Actions.JUMP:
-                setButtonPress(agentIndex, agents.current[agentIndex].isButtonJumpPressedRef, "jump", duration);
+                setButtonPress(agentIndex, agents[agentIndex].isButtonJumpPressedRef, "jump", duration);
                 break;
             case Actions.NONE:
             default:
                 break;
         }
     };
-
 
     return (
         <PlayerContext.Provider

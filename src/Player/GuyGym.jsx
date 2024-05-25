@@ -31,19 +31,21 @@ const GuyGym = ({
     isButtonLeftPressedRef,
     isButtonRightPressedRef,
     isButtonJumpPressedRef,
+    startingPos,
     moveAgent,
+    addAgent,
 }) => {
     const { isButtonFreeRoamToggledRef, isButtonResetToggledRef } = useInterfaceButton();
 
     // const { rb, isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef, moveAgent } = usePlayer();
     const group = useRef();
 
-    useFrame(()=>{
-        if(timer <= 0 )
-            moveAgent(agentId, Actions.FORWARD);
-        else
-            timer--;
-    })
+    // useFrame(() => {
+    //     if (timer <= 0) moveAgent(agentId, Actions.FORWARD);
+    //     // else if (timer == 10)
+    //     //     addAgent();
+    //     else timer--;
+    // });
 
     // const rb = useRef();
     const playerPos = useRef();
@@ -67,7 +69,10 @@ const GuyGym = ({
     // 'runningAnim'
 
     let restartScene = () => {
-        const position = vec3(0, 0, 0);
+        const position = vec3();
+        position.x = startingPos.x;
+        position.y = startingPos.y;
+        position.z = startingPos.z;
         rb.current.setTranslation(position, true);
         isButtonResetToggledRef.current = false;
     };
@@ -172,130 +177,133 @@ const GuyGym = ({
     });
 
     return (
-        <RigidBody
-            ref={rb}
-            colliders={false}
-            canSleep={false}
-            enabledRotations={[false, true, false]}
-            onCollisionEnter={(e) => {
-                if (e.other.rigidBodyObject.name === "floor") {
-                    inTheAir.current = false;
-                    landed.current = true;
-                    const curVel = rb.current.linvel();
-                    curVel.y = 0;
-                    rb.current.setLinvel(curVel);
-                }
-            }}
-            gravityScale={2}
-            name="Guy"
-        >
-            <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, 0]} />
-            <group ref={group} {...props} dispose={null}>
-                <group name="Scene">
-                    <group name="Guy" rotation={[Math.PI / 2, 0, Math.PI]} scale={0.6}>
-                        <primitive object={nodes.mixamorigHips} />
-                        <skinnedMesh
-                            castShadow
-                            name="name0"
-                            geometry={nodes.name0.geometry}
-                            material={nodes.name0.material}
-                            skeleton={nodes.name0.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name1"
-                            geometry={nodes.name1.geometry}
-                            material={nodes.name1.material}
-                            skeleton={nodes.name1.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name10"
-                            geometry={nodes.name10.geometry}
-                            material={nodes.name10.material}
-                            skeleton={nodes.name10.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name11"
-                            geometry={nodes.name11.geometry}
-                            material={nodes.name11.material}
-                            skeleton={nodes.name11.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name12"
-                            geometry={nodes.name12.geometry}
-                            material={nodes.name12.material}
-                            skeleton={nodes.name12.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name13"
-                            geometry={nodes.name13.geometry}
-                            material={nodes.name13.material}
-                            skeleton={nodes.name13.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name2"
-                            geometry={nodes.name2.geometry}
-                            material={nodes.name2.material}
-                            skeleton={nodes.name2.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name3"
-                            geometry={nodes.name3.geometry}
-                            material={nodes.name3.material}
-                            skeleton={nodes.name3.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name4"
-                            geometry={nodes.name4.geometry}
-                            material={nodes.name4.material}
-                            skeleton={nodes.name4.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name5"
-                            geometry={nodes.name5.geometry}
-                            material={nodes.name5.material}
-                            skeleton={nodes.name5.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name6"
-                            geometry={nodes.name6.geometry}
-                            material={nodes.name6.material}
-                            skeleton={nodes.name6.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name7"
-                            geometry={nodes.name7.geometry}
-                            material={nodes.name7.material}
-                            skeleton={nodes.name7.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name8"
-                            geometry={nodes.name8.geometry}
-                            material={nodes.name8.material}
-                            skeleton={nodes.name8.skeleton}
-                        />
-                        <skinnedMesh
-                            castShadow
-                            name="name9"
-                            geometry={nodes.name9.geometry}
-                            material={nodes.name9.material}
-                            skeleton={nodes.name9.skeleton}
-                        />
+            <RigidBody
+                // position-y={startingPos.y}
+                // position-z={100}
+                ref={rb}
+                colliders={false}
+                canSleep={false}
+                enabledRotations={[false, true, false]}
+                onCollisionEnter={(e) => {
+                    if (e.other.rigidBodyObject.name === "floor") {
+                        inTheAir.current = false;
+                        landed.current = true;
+                        const curVel = rb.current.linvel();
+                        curVel.y = 0;
+                        rb.current.setLinvel(curVel);
+                    }
+                }}
+                gravityScale={2}
+                name="Guy"
+            >
+                <CapsuleCollider args={[0.5, 0.35]} position={[0,0.84,startingPos.z - startingPos.z/2 + 0]} />
+                {/* <CapsuleCollider args={[0.5, 0.35]} position={[startingPos.x+0,startingPos.y+ 0.84,startingPos.z - startingPos.z/2 + 0]} /> */}
+                <group ref={group} {...props} dispose={null}>
+                    <group name="Scene">
+                        <group name="Guy" rotation={[Math.PI / 2, 0, Math.PI]} scale={0.6}>
+                            <primitive object={nodes.mixamorigHips} />
+                            <skinnedMesh
+                                castShadow
+                                name="name0"
+                                geometry={nodes.name0.geometry}
+                                material={nodes.name0.material}
+                                skeleton={nodes.name0.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name1"
+                                geometry={nodes.name1.geometry}
+                                material={nodes.name1.material}
+                                skeleton={nodes.name1.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name10"
+                                geometry={nodes.name10.geometry}
+                                material={nodes.name10.material}
+                                skeleton={nodes.name10.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name11"
+                                geometry={nodes.name11.geometry}
+                                material={nodes.name11.material}
+                                skeleton={nodes.name11.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name12"
+                                geometry={nodes.name12.geometry}
+                                material={nodes.name12.material}
+                                skeleton={nodes.name12.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name13"
+                                geometry={nodes.name13.geometry}
+                                material={nodes.name13.material}
+                                skeleton={nodes.name13.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name2"
+                                geometry={nodes.name2.geometry}
+                                material={nodes.name2.material}
+                                skeleton={nodes.name2.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name3"
+                                geometry={nodes.name3.geometry}
+                                material={nodes.name3.material}
+                                skeleton={nodes.name3.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name4"
+                                geometry={nodes.name4.geometry}
+                                material={nodes.name4.material}
+                                skeleton={nodes.name4.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name5"
+                                geometry={nodes.name5.geometry}
+                                material={nodes.name5.material}
+                                skeleton={nodes.name5.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name6"
+                                geometry={nodes.name6.geometry}
+                                material={nodes.name6.material}
+                                skeleton={nodes.name6.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name7"
+                                geometry={nodes.name7.geometry}
+                                material={nodes.name7.material}
+                                skeleton={nodes.name7.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name8"
+                                geometry={nodes.name8.geometry}
+                                material={nodes.name8.material}
+                                skeleton={nodes.name8.skeleton}
+                            />
+                            <skinnedMesh
+                                castShadow
+                                name="name9"
+                                geometry={nodes.name9.geometry}
+                                material={nodes.name9.material}
+                                skeleton={nodes.name9.skeleton}
+                            />
+                        </group>
                     </group>
                 </group>
-            </group>
-        </RigidBody>
+            </RigidBody>
     );
 };
 
