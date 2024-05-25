@@ -13,7 +13,9 @@ import { Actions } from "../Class/Actions";
 
 function Env1() {
     const { target, platforms, setTarget, setPlatforms, addPlatform } = useWorldEnv();
-    const { moveAgent,  getRotation, getPosition} = usePlayer();
+    const {} = usePlayer();
+    const { agents, moveAgent, getPosition, getRotation, resetAgent , addAgent} = usePlayer();
+
     const { isButtonDebugToggledState } = useInterfaceButton();
 
     let handleButtonClick = () => {};
@@ -30,7 +32,6 @@ function Env1() {
         const randomPosition = [randomX + delta, randomY + delta, randomZ + delta];
         addPlatform(randomPosition);
     };
-    
 
     const handleKeyDown = (event) => {
         if (event.key === "p" || event.key === "P") {
@@ -39,26 +40,29 @@ function Env1() {
         switch (event.key) {
             case "ArrowUp":
             case "w":
-                moveAgent(Actions.FORWARD);
+                moveAgent(0,Actions.FORWARD);
                 break;
             case "ArrowDown":
             case "s":
-                moveAgent(Actions.BACKWARD);
+                moveAgent(0,Actions.BACKWARD);
                 break;
         }
         switch (event.key) {
             case "ArrowLeft":
             case "a":
-                moveAgent(Actions.LEFT);
+                moveAgent(0,Actions.LEFT);
                 break;
             case "ArrowRight":
             case "d":
-                moveAgent(Actions.RIGHT);
+                moveAgent(0,Actions.RIGHT);
                 break;
         }
         switch (event.key) {
             case " ":
-                moveAgent(Actions.JUMP);
+                moveAgent(0,Actions.JUMP);
+                break;
+            case "y":
+                addAgent();
                 break;
         }
     };
@@ -80,7 +84,22 @@ function Env1() {
                 <Physics debug={isButtonDebugToggledState}>
                     <PerspectiveCamera makeDefault position={[0, 7, 13]} />
                     <Light_Common />
-                    <GuyGym />
+                    {agents.current.map((agent, id) => {
+                        return (
+                            <GuyGym
+                                agentId={agent.agentId.current}
+                                key={agent.agentId}
+                                rb={agent.rb}
+                                isButtonUpPressedRef={agent.isButtonUpPressedRef}
+                                isButtonDownPressedRef={agent.isButtonDownPressedRef}
+                                isButtonLeftPressedRef={agent.isButtonLeftPressedRef}
+                                isButtonRightPressedRef={agent.isButtonRightPressedRef}
+                                isButtonJumpPressedRef={agent.isButtonJumpPressedRef}
+                                moveAgent={moveAgent}
+                            />
+                        );
+                    })}
+
                     <FloorWithSquares />
                     <RigidBody type="fixed" name="floor" colliders="hull">
                         <CheckerPlatform position={target.position} />

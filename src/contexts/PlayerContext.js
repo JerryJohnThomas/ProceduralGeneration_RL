@@ -1,87 +1,84 @@
-import React, { createContext, useContext, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { vec3 } from "@react-three/rapier";
 import * as THREE from "three";
 import { Actions, MOVEMENT_SPEED, JUMP_FORCE, ROTATION_SPEED } from "../Class/Actions";
 
-import { useFrame} from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
-    
-    const isButtonUpPressedRef = useRef(false);
-    const isButtonDownPressedRef = useRef(false);
-    const isButtonLeftPressedRef = useRef(false);
-    const isButtonRightPressedRef = useRef(false);
-    const isButtonJumpPressedRef = useRef(false);
 
+    // const agents = useRef([]);
+    let AgentsCount = 1;
+    const [, forceUpdate] = useState(0); // Used to force re-render
 
-    // this will be only used in guygym and not anywhere else
-    const rb = useRef();
-
-    const getPosition = () => {
-        return rb.current.translation();
-    };
-
-    const getRotation = () => {
-        return rb.current.rotation();
-    };
-
-
-    const resetPlayer = () => {
-        const position = vec3(0, 0, 0);
-        rb.current.setTranslation(position, true);
-    };
-
-    const timeoutRefs = useRef({
-        up: null,
-        down: null,
-        left: null,
-        right: null,
-        jump: null
+    const InitializeAgent = (id) => ({
+        agentId : useRef(id),
+        rb: useRef(null),
+        isButtonUpPressedRef: useRef(false),
+        isButtonDownPressedRef: useRef(false),
+        isButtonLeftPressedRef: useRef(false),
+        isButtonRightPressedRef: useRef(false),
+        isButtonJumpPressedRef: useRef(false),
+        timeoutRefs: useRef({
+            up: { current: null },
+            down: { current: null },
+            left: { current: null },
+            right: { current: null },
+            jump: { current: null },
+        }),
     });
+    const agents= useRef( [InitializeAgent(0)]);
 
+    const addAgent = () =>{
+        // agents.current.push(InitializeAgent(AgentsCount));
+        AgentsCount++;
+        forceUpdate(n => n + 1);
+    }
 
-    
-    const setButtonPress = (ref, timeoutKey, duration) => {
+    const getPosition = (agentIndex) => {
+        return agents.current[agentIndex].rb.current.translation();
+    };
+
+    const getRotation = (agentIndex) => {
+        return agents.current[agentIndex].rb.current.rotation();
+    };
+
+    const resetAgent = (agentIndex) => {
+        const position = vec3(0, 0, 0);
+        agents.current[agentIndex].rb.current.setTranslation(position, true);
+    };
+
+    const setButtonPress = (agentIndex, ref, timeoutKey, duration) => {
         ref.current = true;
 
-        if (timeoutRefs.current[timeoutKey]) {
-            clearTimeout(timeoutRefs.current[timeoutKey]);
+        if (agents.current[agentIndex].timeoutRefs.current[timeoutKey]) {
+            clearTimeout(agents.current[agentIndex].timeoutRefs.current[timeoutKey]);
         }
 
-        timeoutRefs.current[timeoutKey] = setTimeout(() => {
+        agents.current[agentIndex].timeoutRefs.current[timeoutKey] = setTimeout(() => {
             ref.current = false;
-            timeoutRefs.current[timeoutKey] = null;
+            agents.current[agentIndex].timeoutRefs.current[timeoutKey] = null;
         }, duration);
     };
 
-    // const setButtonPress = (ref, duration) => {
-    //     console.log("button pressed");
-    //     ref.current = true;
-    //     console.log(isButtonUpPressedRef.current);
-    //     setTimeout(() => {
-    //         ref.current = false;
-    //     }, duration);
-    // };
-
-
-    const moveAgent = (action, duration = 100) => {
+    const moveAgent = (agentIndex, action, duration = 100) => {
         switch (action) {
             case Actions.FORWARD:
-                setButtonPress(isButtonUpPressedRef, "up",duration);
+                setButtonPress(agentIndex, agents.current[agentIndex].isButtonUpPressedRef, "up", duration);
                 break;
             case Actions.BACKWARD:
-                setButtonPress(isButtonDownPressedRef,"down", duration);
+                setButtonPress(agentIndex, agents.current[agentIndex].isButtonDownPressedRef, "down", duration);
                 break;
             case Actions.LEFT:
-                setButtonPress(isButtonLeftPressedRef, "left", duration);
+                setButtonPress(agentIndex, agents.current[agentIndex].isButtonLeftPressedRef, "left", duration);
                 break;
             case Actions.RIGHT:
-                setButtonPress(isButtonRightPressedRef, "right", duration);
+                setButtonPress(agentIndex, agents.current[agentIndex].isButtonRightPressedRef, "right", duration);
                 break;
             case Actions.JUMP:
-                setButtonPress(isButtonJumpPressedRef, "jump", duration);
+                setButtonPress(agentIndex, agents.current[agentIndex].isButtonJumpPressedRef, "jump", duration);
                 break;
             case Actions.NONE:
             default:
@@ -91,17 +88,16 @@ export const PlayerProvider = ({ children }) => {
 
 
     return (
-        <PlayerContext.Provider value={{
-            rb,
-            moveAgent,
-            getPosition,
-            getRotation,
-            isButtonUpPressedRef,
-            isButtonDownPressedRef,
-            isButtonLeftPressedRef,
-            isButtonRightPressedRef,
-            isButtonJumpPressedRef,
-        }}>
+        <PlayerContext.Provider
+            value={{
+                agents,
+                moveAgent,
+                getPosition,
+                getRotation,
+                resetAgent,
+                addAgent
+            }}
+        >
             {children}
         </PlayerContext.Provider>
     );

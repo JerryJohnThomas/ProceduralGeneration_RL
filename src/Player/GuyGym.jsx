@@ -22,23 +22,28 @@ const ROTATION_SPEED = 5;
 const vel = new Vector3();
 let timer = 100;
 
-const GuyGym = (props) => {
-    const {
-        isButtonFreeRoamToggledRef,
-        isButtonResetToggledRef,
-    } = useInterfaceButton();
+const GuyGym = ({
+    props,
+    agentId,
+    rb,
+    isButtonUpPressedRef,
+    isButtonDownPressedRef,
+    isButtonLeftPressedRef,
+    isButtonRightPressedRef,
+    isButtonJumpPressedRef,
+    moveAgent,
+}) => {
+    const { isButtonFreeRoamToggledRef, isButtonResetToggledRef } = useInterfaceButton();
 
-    const { rb, isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef, moveAgent } = usePlayer();
+    // const { rb, isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef, moveAgent } = usePlayer();
     const group = useRef();
-    
+
     useFrame(()=>{
-        console.log(timer);
-        if(timer <= 0 )     
-            moveAgent(Actions.FORWARD);
+        if(timer <= 0 )
+            moveAgent(agentId, Actions.FORWARD);
         else
             timer--;
     })
-    
 
     // const rb = useRef();
     const playerPos = useRef();
@@ -108,16 +113,16 @@ const GuyGym = (props) => {
             y: 0,
             z: 0,
         };
-        if ( isButtonUpPressedRef.current) {
+        if (isButtonUpPressedRef.current) {
             vel.z -= MOVEMENT_SPEED;
         }
-        if ( isButtonDownPressedRef.current) {
+        if (isButtonDownPressedRef.current) {
             vel.z += MOVEMENT_SPEED;
         }
-        if ( isButtonLeftPressedRef.current) {
+        if (isButtonLeftPressedRef.current) {
             rotVel.y += ROTATION_SPEED;
         }
-        if ( isButtonRightPressedRef.current) {
+        if (isButtonRightPressedRef.current) {
             rotVel.y -= ROTATION_SPEED;
         }
 
@@ -128,7 +133,7 @@ const GuyGym = (props) => {
         const eulerRot = euler().setFromQuaternion(quat(rb.current.rotation()));
         vel.applyEuler(eulerRot);
 
-        if ((isButtonJumpPressedRef.current) && !inTheAir.current && landed.current) {
+        if (isButtonJumpPressedRef.current && !inTheAir.current && landed.current) {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;
