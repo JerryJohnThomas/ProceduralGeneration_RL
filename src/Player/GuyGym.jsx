@@ -196,7 +196,7 @@ const GuyGym = ({
                 gravityScale={2}
                 name="Guy"
             >
-                <CapsuleCollider args={[0.5, 0.35]} position={[0,0.84,startingPos.z - startingPos.z/2 + 0]} />
+                <CapsuleCollider args={[0.5, 0.35]} position={[0,0.84,startingPos.z/2 + 0]} />
                 {/* <CapsuleCollider args={[0.5, 0.35]} position={[startingPos.x+0,startingPos.y+ 0.84,startingPos.z - startingPos.z/2 + 0]} /> */}
                 <group ref={group} {...props} dispose={null}>
                     <group name="Scene">
