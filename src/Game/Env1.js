@@ -6,12 +6,12 @@ import PlatformAdder from "./Components/PlatformAdder";
 import { useWorldEnv } from "../contexts/WorldEnv";
 
 function Env1() {
-    const { startingPosition, target, platforms, setStartingPosition, setTarget, setPlatforms, addPlatform } = useWorldEnv();
+    const { target, platforms,  setTarget, setPlatforms, addPlatform } = useWorldEnv();
     let handleButtonClick = () => {};
     const controls = useRef();
 
     let AddPlatformWrapper = (whoCalled) => {
-        console.log(whoCalled);
+        // console.log(whoCalled);
         let delta = 0.01;
         // Generate random position within a range
         const range = 20;
