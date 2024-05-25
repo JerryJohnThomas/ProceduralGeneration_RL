@@ -13,29 +13,39 @@ import { useKeyboardControls } from "@react-three/drei";
 import { Controls } from "./Player";
 import * as THREE from "three";
 import { useInterfaceButton } from "../contexts/InterfaceButton";
+import { usePlayer } from "../contexts/PlayerContext";
+import InterfaceMovement from "./InterfaceMovement";
+import { Actions } from "../Class/Actions";
 const MOVEMENT_SPEED = 4.2;
 const JUMP_FORCE = 10;
 const ROTATION_SPEED = 5;
 const vel = new Vector3();
+let timer = 100;
 
-const Guy = (props) => {
+const GuyGym = (props) => {
     const {
-        isButtonUpPressedRef,
-        isButtonDownPressedRef,
-        isButtonLeftPressedRef,
-        isButtonRightPressedRef,
-        isButtonJumpPressedRef,
         isButtonFreeRoamToggledRef,
         isButtonResetToggledRef,
     } = useInterfaceButton();
+
+    const { rb, isButtonUpPressedRef, isButtonDownPressedRef, isButtonLeftPressedRef, isButtonRightPressedRef, isButtonJumpPressedRef, moveAgent } = usePlayer();
     const group = useRef();
-    const rb = useRef();
+    
+    useFrame(()=>{
+        console.log(timer);
+        if(timer <= 0 )     
+            moveAgent(Actions.FORWARD);
+        else
+            timer--;
+    })
+    
+
+    // const rb = useRef();
     const playerPos = useRef();
     const playerRot = useRef();
     const { nodes, materials, animations } = useGLTF(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);
     const { actions, names } = useAnimations(animations, group);
     const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
-    const [_, get] = useKeyboardControls();
     const inTheAir = useRef(true);
     const landed = useRef(false);
     const { camera } = useThree();
@@ -62,20 +72,6 @@ const Guy = (props) => {
         setAnimations(names);
         restartScene();
     }, [names]);
-
-    useFrame(() => {
-        // console.log(camera);
-
-        if (!camera || !rb.current || playerPos.current == null || isButtonFreeRoamToggledRef.current) return;
-
-        let playerPosition = playerPos.current;
-        // uncomment this
-        // if ( isButtonResetToggledRef.current || playerPosition.y < diethreshold) restartScene();
-        if (isButtonResetToggledRef.current) restartScene();
-        // Get the player's position
-        camera.position.set(playerPosition.x + offset, playerPosition.y + offset, playerPosition.z + offset);
-        camera.lookAt(playerPosition.x, playerPosition.y, playerPosition.z);
-    });
 
     useEffect(() => {
         const animationAction = actions[names[animationIndex]];
@@ -112,27 +108,27 @@ const Guy = (props) => {
             y: 0,
             z: 0,
         };
-        if (get()[Controls.forward] || isButtonUpPressedRef.current) {
+        if ( isButtonUpPressedRef.current) {
             vel.z -= MOVEMENT_SPEED;
         }
-        if (get()[Controls.back] || isButtonDownPressedRef.current) {
+        if ( isButtonDownPressedRef.current) {
             vel.z += MOVEMENT_SPEED;
         }
-        if (get()[Controls.left] || isButtonLeftPressedRef.current) {
+        if ( isButtonLeftPressedRef.current) {
             rotVel.y += ROTATION_SPEED;
         }
-        if (get()[Controls.right] || isButtonRightPressedRef.current) {
+        if ( isButtonRightPressedRef.current) {
             rotVel.y -= ROTATION_SPEED;
         }
 
-        // if (!(rotVel.x + rotVel.y + rotVel.z == 0) || !(vel.x + vel.y + vel.z == 0)) console.log(rotVel, vel);
         // rb.current.setAngvel(angVel);
         rb.current.setAngvel(rotVel);
 
         // apply rotation to x and z to go in the right direction
         const eulerRot = euler().setFromQuaternion(quat(rb.current.rotation()));
         vel.applyEuler(eulerRot);
-        if ((get()[Controls.jump] || isButtonJumpPressedRef.current) && !inTheAir.current && landed.current) {
+
+        if ((isButtonJumpPressedRef.current) && !inTheAir.current && landed.current) {
             vel.y += JUMP_FORCE;
             inTheAir.current = true;
             landed.current = false;
@@ -298,6 +294,6 @@ const Guy = (props) => {
     );
 };
 
-export default Guy;
+export default GuyGym;
 
 useGLTF.preload(`${process.env.PUBLIC_URL}/Players/GuyJump.glb`);

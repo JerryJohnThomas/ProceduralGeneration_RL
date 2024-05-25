@@ -4,7 +4,8 @@ import { useRef } from "react";
 
 const WorldEnvContext = createContext({});
 
-const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
+const initialPlatforms = [new Platform(1, [0, -2, 0], "#ff0000", [5,0.5,100]), new Platform(2, [3, 0, 1], "#00ff00")];
+// const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
 
 export const WorldEnvProvider = (props) => {
     const [startingPosition, setStartingPosition] = useState([0, 0, 0]); // This is not used
