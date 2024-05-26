@@ -38,7 +38,8 @@ const GuyGym = ({
     startingPos,
     moveAgent,
     addAgent,
-    groupRef
+    groupRef,
+    currentAgent
 }) => {
     const { isButtonFreeRoamToggledRef, isButtonResetToggledRef } = useInterfaceButton();
 
@@ -63,7 +64,9 @@ const GuyGym = ({
     const { actions, names } = useAnimations(animations, groupRef);
     console.log(actions);
     console.log(agentId);
-    const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
+    // const { setAnimations, animationIndex, setAnimationIndex } = useCharacterAnimations();
+    const [animationIndex, setAnimationIndex] = useState(0);
+
     const inTheAir = useRef(true);
     const landed = useRef(false);
     const { camera } = useThree();
@@ -90,41 +93,39 @@ const GuyGym = ({
 
     // animations
     useEffect(() => {
-        setAnimations(names);
+        // setAnimations(names);
         restartScene();
     }, [names]);
 
-    // useEffect(() => {
-    //     const animationAction = actions[names[animationIndex]];
-
-    //     if (animationAction) {
-    //         // Reset and fade in the animation
-    //         // Set the loop mode based on the animation index
-    //         animationAction.reset().fadeIn(0.5);
-
-    //         if (animationIndex === 2) {
-    //             animationAction.setLoop(THREE.LoopOnce, 1);
-    //             animationAction.clampWhenFinished = true; // Pause at the last frame
-    //         } else {
-    //             animationAction.setLoop(THREE.LoopRepeat);
-    //         }
-
-    //         animationAction.play();
-
-    //         return () => {
-    //             animationAction.fadeOut(0.5);
-    //         };
-    //     }
-    // }, [animationIndex, actions, names]);
-
     useEffect(() => {
-        // Reset and fade in animation after an index has been changed
-        actions[names[animationIndex]].reset().fadeIn(0.5).play()
-        // In the clean-up phase, fade it out
-        return () => actions[names[animationIndex]].fadeOut(0.5)
-      }, [animationIndex, actions, names])
+        const animationAction = actions[names[animationIndex]];
 
-      
+        if (animationAction) {
+            // Reset and fade in the animation
+            // Set the loop mode based on the animation index
+            animationAction.reset().fadeIn(0.5);
+
+            if (animationIndex === 2) {
+                animationAction.setLoop(THREE.LoopOnce, 1);
+                animationAction.clampWhenFinished = true; // Pause at the last frame
+            } else {
+                animationAction.setLoop(THREE.LoopRepeat);
+            }
+
+            animationAction.play();
+
+            return () => {
+                animationAction.fadeOut(0.5);
+            };
+        }
+    }, [animationIndex, actions, names]);
+
+    // useEffect(() => {
+    //     // Reset and fade in animation after an index has been changed
+    //     actions[names[agentId]].reset().fadeIn(0.5).play()
+    //     // In the clean-up phase, fade it out
+    //     return () => actions[names[agentId]].fadeOut(0.5)
+    //   }, [agentId, actions, names])
 
     useFrame(({ camera }) => {
         if (rb.current == null) return;
@@ -221,7 +222,7 @@ const GuyGym = ({
             gravityScale={2}
             name="Guy"
         >
-            <Text color="gray" fontSize={0.3} position={[0, 2.5, 0]} textAlign="center">
+            <Text color={currentAgent.current == agentId?"red":"gray"} fontSize={0.3} position={[0, 2.5, 0]} textAlign="center" >
                 {agentId}
             </Text>
             <CapsuleCollider args={[0.5, 0.35]} position={[0, 0.84, startingPos.z / 2 + 0]} />
