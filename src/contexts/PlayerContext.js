@@ -12,6 +12,7 @@ export const PlayerProvider = ({ children }) => {
     const InitializeAgent = (id, startingPos={x:0,y:2,z:0}) => ({
         agentId : useRef(id),
         rb: useRef(null),
+        groupRef: useRef(null),
         isButtonUpPressedRef: useRef(false),
         isButtonDownPressedRef: useRef(false),
         isButtonLeftPressedRef: useRef(false),

@@ -17,7 +17,7 @@ function Env1() {
     const { agents, moveAgent, getPosition, getRotation, resetAgent , addAgent} = usePlayer();
 
     const { isButtonDebugToggledState } = useInterfaceButton();
-
+    let currentAgent = 1;
     let handleButtonClick = () => {};
     const controls = useRef();
 
@@ -40,26 +40,26 @@ function Env1() {
         switch (event.key) {
             case "ArrowUp":
             case "w":
-                moveAgent(0,Actions.FORWARD);
+                moveAgent(currentAgent,Actions.FORWARD);
                 break;
             case "ArrowDown":
             case "s":
-                moveAgent(0,Actions.BACKWARD);
+                moveAgent(currentAgent,Actions.BACKWARD);
                 break;
         }
         switch (event.key) {
             case "ArrowLeft":
             case "a":
-                moveAgent(0,Actions.LEFT);
+                moveAgent(currentAgent,Actions.LEFT);
                 break;
             case "ArrowRight":
             case "d":
-                moveAgent(0,Actions.RIGHT);
+                moveAgent(currentAgent,Actions.RIGHT);
                 break;
         }
         switch (event.key) {
             case " ":
-                moveAgent(0,Actions.JUMP);
+                moveAgent(currentAgent,Actions.JUMP);
                 break;
             case "y":
                 addAgent();
@@ -98,6 +98,7 @@ function Env1() {
                                 startingPos={agent.startingPos}
                                 moveAgent={moveAgent}
                                 addAgent={addAgent}
+                                groupRef={agent.groupRef}
                             />
                         );
                     })}
