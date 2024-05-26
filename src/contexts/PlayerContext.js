@@ -31,12 +31,9 @@ export const PlayerProvider = ({ children }) => {
     // const [agents, setAgents] = useState([InitializeAgent(0, {x:-2,y:3,z:0})]);
     const [agents, setAgents] = useState([InitializeAgent(0, {x:2,y:3,z:0}),InitializeAgent(1, {x:-2,y:3,z:0})]);
 
-    // useEffect(()=>{ 
-    //     addAgent();
-    // },[]);
-
     const addAgent = () => {
-        setAgents(prevAgents => [...prevAgents, InitializeAgent(AgentsCount)]);
+        let newAgent = InitializeAgent(AgentsCount, {x:-2,y:3,z:0})
+        // setAgents(prevAgents => [...prevAgents, newAgent ]);
         AgentsCount++;
     };
 
