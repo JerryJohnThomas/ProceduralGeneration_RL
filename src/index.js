@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { CharacterAnimationsProvider } from "./contexts/CharacterAnimations";
 import { InterfaceButtonProvider } from "./contexts/InterfaceButton";
 import { WorldEnvProvider } from "./contexts/WorldEnv";
+import { PlayerProvider } from "./contexts/PlayerContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,7 +14,9 @@ root.render(
         <CharacterAnimationsProvider>
             <WorldEnvProvider>
                 <InterfaceButtonProvider>
-                    <App />
+                    <PlayerProvider>
+                        <App />
+                    </PlayerProvider>
                 </InterfaceButtonProvider>
             </WorldEnvProvider>
         </CharacterAnimationsProvider>

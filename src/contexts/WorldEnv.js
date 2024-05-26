@@ -4,10 +4,11 @@ import { useRef } from "react";
 
 const WorldEnvContext = createContext({});
 
-const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
+const initialPlatforms = [new Platform(1, [0, -2, 0], "#ff0000", [5,0.5,100]), new Platform(2, [3, 0, 1], "#00ff00")];
+// const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
 
 export const WorldEnvProvider = (props) => {
-    const [startingPosition, setStartingPosition] = useState([0, 0, 0]); // Default starting position
+    const [startingPosition, setStartingPosition] = useState([0, 0, 0]); // This is not used
     const [target, setTarget] = useState( new Platform(0, [-1, 3.2, 1], "")); // Default target position
     const [platforms, setPlatforms] = useState(initialPlatforms); // List of platforms
     let idCounter = useRef(1 + initialPlatforms.length);

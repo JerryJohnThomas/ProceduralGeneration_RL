@@ -65,13 +65,13 @@ const Guy = (props) => {
 
     useFrame(() => {
         // console.log(camera);
-        
+
         if (!camera || !rb.current || playerPos.current == null || isButtonFreeRoamToggledRef.current) return;
 
         let playerPosition = playerPos.current;
         // uncomment this
         // if ( isButtonResetToggledRef.current || playerPosition.y < diethreshold) restartScene();
-        if ( isButtonResetToggledRef.current ) restartScene();
+        if (isButtonResetToggledRef.current) restartScene();
         // Get the player's position
         camera.position.set(playerPosition.x + offset, playerPosition.y + offset, playerPosition.z + offset);
         camera.lookAt(playerPosition.x, playerPosition.y, playerPosition.z);
@@ -125,6 +125,7 @@ const Guy = (props) => {
             rotVel.y -= ROTATION_SPEED;
         }
 
+        // if (!(rotVel.x + rotVel.y + rotVel.z == 0) || !(vel.x + vel.y + vel.z == 0)) console.log(rotVel, vel);
         // rb.current.setAngvel(angVel);
         rb.current.setAngvel(rotVel);
 
@@ -163,8 +164,8 @@ const Guy = (props) => {
         } else {
             setAnimationIndex(0);
         }
-        playerPos.current =rb.current.translation();
-        playerRot.current  =rb.current.rotation();
+        playerPos.current = rb.current.translation();
+        playerRot.current = rb.current.rotation();
         // setPlayerRot(rb.current.rotation());
         // setPlayerPos(rb.current.translation());
     });
