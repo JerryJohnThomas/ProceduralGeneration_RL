@@ -6,12 +6,8 @@ import { useFrame } from "@react-three/fiber";
 
 const PlayerContext = createContext();
 
-export const PlayerProvider = ({ children }) => {
-    
-    // I think this can only be put here
-    let AgentsCount = useRef(3);
-
-    const InitializeAgent = (id, startingPos = { x: 0, y: 2, z: 0 }) => ({
+const InitializeAgent = (id, startingPos = { x: 0, y: 2, z: 0 }) => {
+    return {
         agentId: useRef(id),
         rb: useRef(null),
         groupRef: useRef(null),
@@ -28,7 +24,11 @@ export const PlayerProvider = ({ children }) => {
             right: { current: null },
             jump: { current: null },
         }),
-    });
+    };
+};
+export const PlayerProvider = ({ children }) => {
+    // I think this can only be put here
+    let AgentsCount = useRef(3);
 
     // Helper function to initialize agents
     const initializeAllAgents = (numAgents) => {
@@ -91,6 +91,36 @@ export const PlayerProvider = ({ children }) => {
         }
     };
 
+    
+    const getObservation = (agent) => {
+        const agentPos = agent.rb.current.translation();
+        const relativePos = {
+            x: agent.targetPosition.x - agentPos.x,
+            y: agent.targetPosition.y - agentPos.y,
+            z: agent.targetPosition.z - agentPos.z
+        };
+        const distanceToGoal = Math.sqrt(relativePos.x**2 + relativePos.y**2 + relativePos.z**2);
+        return {
+            relativePos,
+            distanceToGoal,
+            previousBlock: agent.previousBlock,
+        };
+    };
+
+    const step = (action, agent) => {
+        moveAgent(action, agent);
+        const observation = getObservation(agent);
+        const done = observation.distanceToGoal < 1; // Consider done if the distance is less than 1 unit
+        const reward = done ? 1 : -0.01; // Reward structure
+        agent.previousBlock = action; // Update previous block
+        return { observation, reward, done };
+    };
+
+    const sampleAction = () => {
+        return Actions[Math.floor(Math.random() * Actions.length)];
+    };
+
+
     return (
         <PlayerContext.Provider
             value={{
@@ -99,7 +129,10 @@ export const PlayerProvider = ({ children }) => {
                 getPosition,
                 getRotation,
                 resetAgent,
-                AgentsCount
+                AgentsCount,
+                getObservation,
+                step,
+                sampleAction
             }}
         >
             {children}
