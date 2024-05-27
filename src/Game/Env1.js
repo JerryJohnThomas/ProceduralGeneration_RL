@@ -14,10 +14,10 @@ import { Actions } from "../Class/Actions";
 function Env1() {
     const { target, platforms, setTarget, setPlatforms, addPlatform } = useWorldEnv();
     const {} = usePlayer();
-    const { agents, moveAgent, getPosition, getRotation, resetAgent , addAgent} = usePlayer();
+    const { agents, moveAgent, getPosition, getRotation, resetAgent, addAgent } = usePlayer();
 
     const { isButtonDebugToggledState } = useInterfaceButton();
-
+    let currentAgent = useRef(0);
     let handleButtonClick = () => {};
     const controls = useRef();
 
@@ -40,29 +40,32 @@ function Env1() {
         switch (event.key) {
             case "ArrowUp":
             case "w":
-                moveAgent(0,Actions.FORWARD);
+                moveAgent(currentAgent.current, Actions.FORWARD);
                 break;
             case "ArrowDown":
             case "s":
-                moveAgent(0,Actions.BACKWARD);
+                moveAgent(currentAgent.current, Actions.BACKWARD);
                 break;
         }
         switch (event.key) {
             case "ArrowLeft":
             case "a":
-                moveAgent(0,Actions.LEFT);
+                moveAgent(currentAgent.current, Actions.LEFT);
                 break;
             case "ArrowRight":
             case "d":
-                moveAgent(0,Actions.RIGHT);
+                moveAgent(currentAgent.current, Actions.RIGHT);
                 break;
         }
         switch (event.key) {
             case " ":
-                moveAgent(0,Actions.JUMP);
+                moveAgent(currentAgent.current, Actions.JUMP);
                 break;
             case "y":
                 addAgent();
+                break;
+            case "j":
+                currentAgent.current = (currentAgent.current+1)%2;
                 break;
         }
     };
@@ -98,6 +101,8 @@ function Env1() {
                                 startingPos={agent.startingPos}
                                 moveAgent={moveAgent}
                                 addAgent={addAgent}
+                                groupRef={agent.groupRef}
+                                currentAgent={currentAgent}
                             />
                         );
                     })}
