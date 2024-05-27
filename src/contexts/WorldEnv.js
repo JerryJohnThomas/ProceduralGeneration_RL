@@ -6,7 +6,7 @@ const WorldEnvContext = createContext({});
 
 const initialPlatforms = [new Platform(1, [0, -2, 0], "#ff0000", [5, 0.5, 100]),
  new Platform(2, [3, 0, 1], "#00ff00"),
- new Platform(3, [0, -2, 0], "#ff00aa", [100,5,5])
+ new Platform(3, [0.1, -2.2, 0.2], "#094074", [100,5,5])
 ];
 // const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
 

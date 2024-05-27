@@ -38,10 +38,6 @@ export const PlayerProvider = ({ children }) => {
         return agents;
     };
 
-    // const [agents, setAgents] = useState([InitializeAgent(0, {x:0,y:-2,z:0}), InitializeAgent(1, {x:0,y:-2,z:4})]);
-    // const [agents, setAgents] = useState([InitializeAgent(0, {x:-2,y:3,z:0})]);
-    // const [agents, setAgents] = useState([InitializeAgent(0, { x: 2, y: 3, z: 0 }), InitializeAgent(1, { x: -2, y: 3, z: 0 })]);
-
     const [agents, setAgents] = useState(() => initializeAllAgents(AgentsCount.current));
 
     const getPosition = (agentIndex) => {
