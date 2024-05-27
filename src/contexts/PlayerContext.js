@@ -7,10 +7,10 @@ import { useFrame } from "@react-three/fiber";
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
-    let AgentsCount = 2;
+    let AgentsCount = useRef(3);
 
-    const InitializeAgent = (id, startingPos={x:0,y:2,z:0}) => ({
-        agentId : useRef(id),
+    const InitializeAgent = (id, startingPos = { x: 0, y: 2, z: 0 }) => ({
+        agentId: useRef(id),
         rb: useRef(null),
         groupRef: useRef(null),
         isButtonUpPressedRef: useRef(false),
@@ -27,15 +27,22 @@ export const PlayerProvider = ({ children }) => {
             jump: { current: null },
         }),
     });
+
+    // Helper function to initialize agents
+    const initializeAllAgents = (numAgents) => {
+        const agents = [];
+        for (let i = 0; i < numAgents; i++) {
+            const position = { x: i * 2 - numAgents, y: 3, z: 0 }; // Adjust position logic as needed
+            agents.push(InitializeAgent(i, position));
+        }
+        return agents;
+    };
+
     // const [agents, setAgents] = useState([InitializeAgent(0, {x:0,y:-2,z:0}), InitializeAgent(1, {x:0,y:-2,z:4})]);
     // const [agents, setAgents] = useState([InitializeAgent(0, {x:-2,y:3,z:0})]);
-    const [agents, setAgents] = useState([InitializeAgent(0, {x:2,y:3,z:0}),InitializeAgent(1, {x:-2,y:3,z:0})]);
+    // const [agents, setAgents] = useState([InitializeAgent(0, { x: 2, y: 3, z: 0 }), InitializeAgent(1, { x: -2, y: 3, z: 0 })]);
 
-    const addAgent = () => {
-        let newAgent = InitializeAgent(AgentsCount, {x:-2,y:3,z:0})
-        // setAgents(prevAgents => [...prevAgents, newAgent ]);
-        AgentsCount++;
-    };
+    const [agents, setAgents] = useState(() => initializeAllAgents(AgentsCount.current));
 
     const getPosition = (agentIndex) => {
         return agents[agentIndex].rb?.translation();
@@ -94,7 +101,7 @@ export const PlayerProvider = ({ children }) => {
                 getPosition,
                 getRotation,
                 resetAgent,
-                addAgent
+                AgentsCount
             }}
         >
             {children}

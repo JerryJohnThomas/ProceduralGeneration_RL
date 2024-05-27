@@ -12,9 +12,9 @@ import { usePlayer } from "../contexts/PlayerContext";
 import { Actions } from "../Class/Actions";
 
 function Env1() {
-    const { target, platforms, setTarget, setPlatforms, addPlatform } = useWorldEnv();
+    const { target, platforms, setTarget, setPlatforms, addPlatform ,} = useWorldEnv();
     const {} = usePlayer();
-    const { agents, moveAgent, getPosition, getRotation, resetAgent, addAgent } = usePlayer();
+    const { agents, moveAgent, getPosition, getRotation, resetAgent, AgentsCount } = usePlayer();
 
     const { isButtonDebugToggledState } = useInterfaceButton();
     let currentAgent = useRef(0);
@@ -62,10 +62,10 @@ function Env1() {
                 moveAgent(currentAgent.current, Actions.JUMP);
                 break;
             case "y":
-                addAgent();
+                AgentsCount.current = AgentsCount.current +1;  
                 break;
             case "j":
-                currentAgent.current = (currentAgent.current+1)%2;
+                currentAgent.current = (currentAgent.current+1)%AgentsCount.current;
                 break;
         }
     };
@@ -100,7 +100,6 @@ function Env1() {
                                 isButtonJumpPressedRef={agent.isButtonJumpPressedRef}
                                 startingPos={agent.startingPos}
                                 moveAgent={moveAgent}
-                                addAgent={addAgent}
                                 groupRef={agent.groupRef}
                                 currentAgent={currentAgent}
                             />
