@@ -8,7 +8,6 @@ const initialPlatforms = [new Platform(1, [0, -2, 0], "#ff0000", [5, 0.5, 100]),
  new Platform(2, [3, 0, 1], "#00ff00"),
  new Platform(3, [0.1, -2.2, 0.2], "#094074", [100,5,5])
 ];
-// const initialPlatforms = [new Platform(1, [-3, 0, 0], "#ff0000"), new Platform(2, [3, 0, 1], "#00ff00")];
 
 export const WorldEnvProvider = (props) => {
     const [startingPosition, setStartingPosition] = useState([0, 0, 0]); // This is not used

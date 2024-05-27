@@ -7,6 +7,8 @@ import { useFrame } from "@react-three/fiber";
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
+    
+    // I think this can only be put here
     let AgentsCount = useRef(3);
 
     const InitializeAgent = (id, startingPos = { x: 0, y: 2, z: 0 }) => ({
