@@ -13,13 +13,10 @@ import { Actions } from "../Class/Actions";
 
 function Env1() {
     const { target, platforms, setTarget, setPlatforms, addPlatform ,} = useWorldEnv();
-    const {} = usePlayer();
     const { agents, moveAgent, getPosition, getRotation, resetAgent, AgentsCount } = usePlayer();
-
     const { isButtonDebugToggledState } = useInterfaceButton();
+
     let currentAgent = useRef(0);
-    let handleButtonClick = () => {};
-    const controls = useRef();
 
     let AddPlatformWrapper = (whoCalled) => {
         // console.log(whoCalled);
@@ -113,7 +110,7 @@ function Env1() {
                             return <Platform key={platform.id} color={platform.color} size={platform.size} position={platform.position} />;
                         })}
                     </RigidBody>
-                    <OrbitControls ref={controls} />
+                    <OrbitControls />
                     <directionalLight intensity={0.9} position={[5, 10, 5]} />
                     <directionalLight intensity={0.9} position={[-5, 10, -5]} />
                 </Physics>
