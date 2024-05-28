@@ -37,7 +37,6 @@ const GuyGym = ({
     isButtonJumpPressedRef,
     startingPos,
     moveAgent,
-    addAgent,
     groupRef,
     currentAgent
 }) => {

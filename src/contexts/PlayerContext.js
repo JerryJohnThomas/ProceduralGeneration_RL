@@ -6,11 +6,9 @@ import { useFrame } from "@react-three/fiber";
 
 const PlayerContext = createContext();
 
-export const PlayerProvider = ({ children }) => {
-    let AgentsCount = 2;
-
-    const InitializeAgent = (id, startingPos={x:0,y:2,z:0}) => ({
-        agentId : useRef(id),
+const InitializeAgent = (id, startingPos = { x: 0, y: 2, z: 0 }) => {
+    return {
+        agentId: useRef(id),
         rb: useRef(null),
         groupRef: useRef(null),
         isButtonUpPressedRef: useRef(false),
@@ -26,16 +24,23 @@ export const PlayerProvider = ({ children }) => {
             right: { current: null },
             jump: { current: null },
         }),
-    });
-    // const [agents, setAgents] = useState([InitializeAgent(0, {x:0,y:-2,z:0}), InitializeAgent(1, {x:0,y:-2,z:4})]);
-    // const [agents, setAgents] = useState([InitializeAgent(0, {x:-2,y:3,z:0})]);
-    const [agents, setAgents] = useState([InitializeAgent(0, {x:2,y:3,z:0}),InitializeAgent(1, {x:-2,y:3,z:0})]);
-
-    const addAgent = () => {
-        let newAgent = InitializeAgent(AgentsCount, {x:-2,y:3,z:0})
-        // setAgents(prevAgents => [...prevAgents, newAgent ]);
-        AgentsCount++;
     };
+};
+export const PlayerProvider = ({ children }) => {
+    // I think this can only be put here
+    let AgentsCount = useRef(3);
+
+    // Helper function to initialize agents
+    const initializeAllAgents = (numAgents) => {
+        const agents = [];
+        for (let i = 0; i < numAgents; i++) {
+            const position = { x: i * 2 - numAgents, y: 3, z: 0 }; // Adjust position logic as needed
+            agents.push(InitializeAgent(i, position));
+        }
+        return agents;
+    };
+
+    const [agents, setAgents] = useState(() => initializeAllAgents(AgentsCount.current));
 
     const getPosition = (agentIndex) => {
         return agents[agentIndex].rb?.translation();
@@ -86,6 +91,36 @@ export const PlayerProvider = ({ children }) => {
         }
     };
 
+    
+    const getObservation = (agent) => {
+        const agentPos = agent.rb.current.translation();
+        const relativePos = {
+            x: agent.targetPosition.x - agentPos.x,
+            y: agent.targetPosition.y - agentPos.y,
+            z: agent.targetPosition.z - agentPos.z
+        };
+        const distanceToGoal = Math.sqrt(relativePos.x**2 + relativePos.y**2 + relativePos.z**2);
+        return {
+            relativePos,
+            distanceToGoal,
+            previousBlock: agent.previousBlock,
+        };
+    };
+
+    const step = (action, agent) => {
+        moveAgent(action, agent);
+        const observation = getObservation(agent);
+        const done = observation.distanceToGoal < 1; // Consider done if the distance is less than 1 unit
+        const reward = done ? 1 : -0.01; // Reward structure
+        agent.previousBlock = action; // Update previous block
+        return { observation, reward, done };
+    };
+
+    const sampleAction = () => {
+        return Actions[Math.floor(Math.random() * Actions.length)];
+    };
+
+
     return (
         <PlayerContext.Provider
             value={{
@@ -94,7 +129,10 @@ export const PlayerProvider = ({ children }) => {
                 getPosition,
                 getRotation,
                 resetAgent,
-                addAgent
+                AgentsCount,
+                getObservation,
+                step,
+                sampleAction
             }}
         >
             {children}

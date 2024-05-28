@@ -12,7 +12,7 @@ import { usePlayer } from "../contexts/PlayerContext";
 import { Actions } from "../Class/Actions";
 
 // This is refactoring only
-function Env1() {
+function Env2() {
     const { target, platforms, setTarget, setPlatforms, addPlatform ,} = useWorldEnv();
     const { agents, moveAgent, getPosition, getRotation, resetAgent, AgentsCount } = usePlayer();
     const { isButtonDebugToggledState } = useInterfaceButton();
@@ -80,7 +80,6 @@ function Env1() {
     }, []);
 
     return (
-        <Canvas style={{ height: "100vh" }}>
             <Suspense fallback={null}>
                 <Physics debug={isButtonDebugToggledState}>
                     <PerspectiveCamera makeDefault position={[0, 7, 13]} />
@@ -116,8 +115,7 @@ function Env1() {
                     <directionalLight intensity={0.9} position={[-5, 10, -5]} />
                 </Physics>
             </Suspense>
-        </Canvas>
     );
 }
 
-export default Env1;
+export default Env2;
